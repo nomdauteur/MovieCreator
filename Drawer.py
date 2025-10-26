@@ -17,7 +17,7 @@ class Drawer:
         self.rate = rate
         self.current_state=[[(0,0,0) for _ in range(self.field_x)] for _ in range(self.field_y)]
         self.time=0
-        self.file_name=generate_random_string(10)
+        self.file_name="videos/"+generate_random_string(10)
         self.multiplier=min(self.x/self.field_x,self.y/self.field_y)
         self.offset_x=(self.x-self.field_x*self.multiplier)/2
         self.offset_y = (self.y - self.field_y * self.multiplier) / 2
