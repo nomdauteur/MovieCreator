@@ -10,11 +10,19 @@ def generate_random_string(length):
     random_string = ''.join(random.choice(characters) for i in range(length))
     return random_string
 
+
 class Drawer:
-    def __init__(self, size=(1920,800),length=60,rate=1, field_size=(100,100)):
+
+    @staticmethod
+    def num_to_color(num):
+        return num
+
+    def __init__(self, size=(1920,800),length=60,rate=1, field_size=(100,100),border=False):
+        self.border_width=5 if border else 0
         self.offset_x = None
         self.offset_y = None
         self.multiplier = None
+        self.border=border
         self.x,self.y=size
         self.field_x,self.field_y=field_size
         self.length = length
@@ -43,16 +51,34 @@ class Drawer:
             size = (self.x, self.y)
         img = Image.new("RGB", size, (255, 255, 255))
         draw = ImageDraw.Draw(img)
-        self.multiplier = min(size[0] / self.field_x, size[1] / self.field_y)
+        self.multiplier = min((size[0]-self.border_width*2) / self.field_x, (size[1]-self.border_width*2) / self.field_y)
         self.offset_x = (size[0] - self.field_x * self.multiplier) / 2
         self.offset_y = (size[1] - self.field_y * self.multiplier) / 2
         for i in range(0, self.field_y):
             for j in range(0, self.field_x):
                 draw.rectangle((self.offset_x+j*self.multiplier,self.offset_y+i*self.multiplier,
                                 self.offset_x+(j+1)*self.multiplier,self.offset_y+(i+1)*self.multiplier),
-                               state[i][j])
+                               self.num_to_color(state[i][j]))
+
+        if (self.border):
+            self.draw_border(draw)
 
         return img
+
+    def draw_border(self,draw):
+        color=(128,128,128)
+        draw.rectangle((self.offset_x-self.border_width, self.offset_y-self.border_width,
+                        self.offset_x, self.offset_y +self.field_y * self.multiplier+self.border_width),
+                        color)
+        draw.rectangle((self.offset_x -self.border_width, self.offset_y -self.border_width,
+                        self.offset_x+self.field_x * self.multiplier+self.border_width, self.offset_y ),
+                       color)
+        draw.rectangle((self.offset_x  +self.field_x * self.multiplier, self.offset_y -self.border_width,
+                        self.offset_x+self.field_x * self.multiplier+self.border_width, self.offset_y+self.field_y * self.multiplier+self.border_width),
+                       color)
+        draw.rectangle((self.offset_x -self.border_width, self.offset_y +self.field_y * self.multiplier,
+                        self.offset_x+self.field_x * self.multiplier+self.border_width, self.offset_y+self.field_x * self.multiplier+self.border_width),
+                       color)
 
     def generate_video(self, sizes=None):
         if sizes is None:
