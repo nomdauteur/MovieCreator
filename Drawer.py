@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 import string
 from copy import deepcopy
+from datetime import datetime
 
 from Coords2D import Coords2D
 
@@ -30,7 +31,7 @@ class Drawer:
         self.rate = rate
         self.current_state=[[(0,0,0) for _ in range(self.field.x)] for _ in range(self.field.y)]
         self.time=0
-        self.file_name="videos/"+generate_random_string(10)
+        self.file_name="videos/"+__class__.__name__+"_"+datetime.now().strftime("%Y%m%dT%H%M%S")+"_"+generate_random_string(10)
         self.states=[]
 
     def next_state(self):
@@ -63,6 +64,7 @@ class Drawer:
 
         if (self.border):
             self.draw_border(draw)
+        self.watermark(draw)
 
         return img
 
@@ -81,6 +83,17 @@ class Drawer:
                         self.offset.x+self.field.x * self.multiplier+self.border_width, self.offset.y+self.field.x * self.multiplier+self.border_width),
                        color)
 
+    def watermark(self,draw):
+        if (self.offset.x>self.offset.y):
+            x=self.offset.x+self.field.x*self.multiplier+2*self.border_width+2
+            y=self.offset.y+self.field.y*self.multiplier
+        else:
+            x=self.offset.x+self.field.x*self.multiplier/2
+            y=self.offset.y+self.field.y*self.multiplier+2*self.border_width+2
+        font = ImageFont.truetype("arial.ttf", 15)
+        draw.text((x,y),"@matphysdat", font=font, fill="black")
+
+
     def generate_video(self, sizes=None):
         if sizes is None:
             sizes = [self.size]
@@ -89,6 +102,7 @@ class Drawer:
         for size in sizes:
             out = cv2.VideoWriter(self.file_name + str(size.x)+'_'+str(size.y)+'.avi', fourcc, self.rate, (size.x, size.y))
             for cadre in self.states:
+
                 img=self.draw_image(cadre,size)
                 #print("LOG: Plus image")
                 frame_rgb = np.array(img)

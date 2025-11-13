@@ -60,5 +60,6 @@ class BallDrawer(Drawer):
 
         if (self.border):
             self.draw_border(draw)
+        self.watermark(draw)
 
         return img

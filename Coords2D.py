@@ -11,6 +11,9 @@ class Coords2D:
         if y is None:
             self.y = 0
 
+    def __str__(self):
+        return "x: {0}, y: {1}".format(self.x, self.y)
+
     def __add__(self, other):
         return Coords2D(self.x + other.x, self.y + other.y)
 
