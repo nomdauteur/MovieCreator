@@ -14,6 +14,7 @@ class PolyLineDrawer(Drawer):
 
     def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False):
         super().__init__(size, length, rate, field_size, border)
+
         self.poly_lines=[]
         self.poly_lines.append(Coords2D(random.randint(0,self.field.x),random.randint(0,self.field.y)))
         self.direction=None
@@ -56,7 +57,7 @@ class PolyLineDrawer(Drawer):
         #draw
         if (not stayable_flag and not turnable_flag):
             #print("No effing way to go")
-            return self.poly_lines
+            return {"lines":self.poly_lines,"current_field_size":self.field}
 
         if (not stayable_flag and turnable_flag):
             self.direction=random.choice(available_dirs)
@@ -74,7 +75,13 @@ class PolyLineDrawer(Drawer):
             print(a)
         print("LOG: chosen dir: {0}".format(self.direction))
 
-        return self.poly_lines
+        return {"lines":self.poly_lines,"current_field_size":self.field}
+
+    def compute_scale(self, size,field_size):
+        self.multiplier = min((size.x - self.border_width * 2) / field_size.x,
+                              (size.y - self.border_width * 2) / field_size.y)
+        self.offset.x = (size.x - field_size.x * self.multiplier) / 2
+        self.offset.y = (size.y - field_size.y * self.multiplier) / 2
 
 
     def draw_image(self,state,size=None):
@@ -82,15 +89,13 @@ class PolyLineDrawer(Drawer):
             size = Coords2D(self.size.x, self.size.y)
         img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
-        self.multiplier = min((size.x-self.border_width*2) / self.field.x, (size.y-self.border_width*2) / self.field.y)
-        self.offset.x = (size.x - self.field.x * self.multiplier) / 2
-        self.offset.y = (size.y - self.field.y * self.multiplier) / 2
-        for i in range(0, len(state)-1):
+        self.compute_scale(size,state["current_field_size"])
+        for i in range(0, len(state["lines"])-1):
             #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
-            draw.line([self.offset.x+state[i].x*self.multiplier,
-                       self.offset.y+state[i].y*self.multiplier,
-                       self.offset.x + state[i+1].x*self.multiplier,
-                       self.offset.y+state[i+1].y*self.multiplier], fill="black", width=5)
+            draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
+                       self.offset.y+state["lines"][i].y*self.multiplier,
+                       self.offset.x + state["lines"][i+1].x*self.multiplier,
+                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill="black", width=5)
 
         if (self.border):
             self.draw_border(draw)

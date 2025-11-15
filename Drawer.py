@@ -48,14 +48,18 @@ class Drawer:
         for cadre in range(0, self.length*self.rate):
             self.states.append(deepcopy(self.next_state()))
 
+    def compute_scale(self, size):
+        self.multiplier = min((size.x - self.border_width * 2) / self.field.x,
+                              (size.y - self.border_width * 2) / self.field.y)
+        self.offset.x = (size.x - self.field.x * self.multiplier) / 2
+        self.offset.y = (size.y - self.field.y * self.multiplier) / 2
+
     def draw_image(self,state,size=None):
         if size is None:
             size = Coords2D(self.size.x, self.size.y)
         img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
-        self.multiplier = min((size.x-self.border_width*2) / self.field.x, (size.y-self.border_width*2) / self.field.y)
-        self.offset.x = (size.x - self.field.x * self.multiplier) / 2
-        self.offset.y = (size.y - self.field.y * self.multiplier) / 2
+        self.compute_scale(size)
         for i in range(0, self.field.y):
             for j in range(0, self.field.x):
                 draw.rectangle((self.offset.x+j*self.multiplier,self.offset.y+i*self.multiplier,

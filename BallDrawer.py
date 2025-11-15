@@ -47,11 +47,7 @@ class BallDrawer(Drawer):
     def draw_image(self,state,size=None):
         if size is None:
             size = Coords2D(self.size.x, self.size.y)
-        self.multiplier = min((size.x - self.border_width * 2) / self.field.x,
-                              (size.y - self.border_width * 2) / self.field.y)
-        print("MULTIPLIER IS: {0}".format(self.multiplier))
-        self.offset.x = (size.x - self.field.x * self.multiplier) / 2
-        self.offset.y = (size.y - self.field.y * self.multiplier) / 2
+        self.compute_scale(size)
         img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
         for b in state["balls"]:

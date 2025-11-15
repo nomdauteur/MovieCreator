@@ -90,4 +90,4 @@ class Coords2D:
 
     @staticmethod
     def exists(pointer, size):
-        return 0<=pointer.x<=size.x and 0<=pointer.y<=size.y
+        return 0<=pointer.x<size.x and 0<=pointer.y<size.y
