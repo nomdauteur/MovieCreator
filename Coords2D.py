@@ -87,3 +87,7 @@ class Coords2D:
 
     def __mul__(self,coefficient): # by number
         return Coords2D(self.x*coefficient, self.y*coefficient)
+
+    @staticmethod
+    def exists(pointer, size):
+        return 0<=pointer.x<=size.x and 0<=pointer.y<=size.y
