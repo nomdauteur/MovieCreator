@@ -73,6 +73,8 @@ class Drawer:
         return img
 
     def draw_border(self,draw):
+        if (self.border_width==0):
+            return
         color=(128,128,128)
         draw.rectangle((self.offset.x-self.border_width, self.offset.y-self.border_width,
                         self.offset.x, self.offset.y +self.field.y * self.multiplier+self.border_width),
@@ -84,7 +86,7 @@ class Drawer:
                         self.offset.x+self.field.x * self.multiplier+self.border_width, self.offset.y+self.field.y * self.multiplier+self.border_width),
                        color)
         draw.rectangle((self.offset.x -self.border_width, self.offset.y +self.field.y * self.multiplier,
-                        self.offset.x+self.field.x * self.multiplier+self.border_width, self.offset.y+self.field.x * self.multiplier+self.border_width),
+                        self.offset.x+self.field.x * self.multiplier+self.border_width, self.offset.y+self.field.y * self.multiplier+self.border_width),
                        color)
 
     def watermark(self,draw):
@@ -101,10 +103,10 @@ class Drawer:
     def generate_video(self, sizes=None):
         if sizes is None:
             sizes = [self.size]
-        fourcc = cv2.VideoWriter_fourcc(*'MJPG')  # Or 'XVID', 'DIVX', etc.
+        fourcc = cv2.VideoWriter_fourcc(*'MP4V')  # Or 'XVID', 'DIVX', etc.
         self.get_all_states()
         for size in sizes:
-            out = cv2.VideoWriter(self.file_name + str(size.x)+'_'+str(size.y)+'.avi', fourcc, self.rate, (size.x, size.y))
+            out = cv2.VideoWriter(self.file_name + str(size.x)+'_'+str(size.y)+'.mp4', fourcc, self.rate, (size.x, size.y))
             for cadre in self.states:
 
                 img=self.draw_image(cadre,size)

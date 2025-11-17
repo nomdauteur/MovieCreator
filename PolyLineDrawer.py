@@ -10,7 +10,7 @@ class PolyLineDrawer(Drawer):
 
     @staticmethod
     def num_to_color(num):
-        return (255, 255, 255) if num == 1 else (0, 0, 0)
+        return (255 if num%3==0 else 0, 255 if num%3==1 else 0, 255 if num%3==2 else 0)
 
     def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False):
         super().__init__(size, length, rate, field_size, border)
@@ -90,12 +90,13 @@ class PolyLineDrawer(Drawer):
         img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
         self.compute_scale(size,state["current_field_size"])
+        #self.compute_scale(size, self.field) #resize once and for all?
         for i in range(0, len(state["lines"])-1):
             #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
             draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
                        self.offset.y+state["lines"][i].y*self.multiplier,
                        self.offset.x + state["lines"][i+1].x*self.multiplier,
-                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill="black", width=5)
+                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill=PolyLineDrawer.num_to_color(i), width=5)
 
         if (self.border):
             self.draw_border(draw)
