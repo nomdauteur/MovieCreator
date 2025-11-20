@@ -8,10 +8,12 @@ class GameOfLifeDrawer(Drawer):
 
     @staticmethod
     def num_to_color(num):
-        return (255,255,255) if num==1 else (0,0,0)
+        return (255,255,255) if num==1 else (43,44,90)
 
-    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, initial_state=None):
+    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, births=[3], stables=[2,3], initial_state=None):
         super().__init__(size, length, rate, field_size,border)
+        self.births=births
+        self.stables=stables
         if initial_state is None:
             initial_state = [[0 for _ in range(self.field.x)] for _ in range(self.field.y)]
             for i in range(0, self.field.y):
@@ -38,11 +40,11 @@ class GameOfLifeDrawer(Drawer):
         for i in range(0, self.field.y):
             for j in range(0, self.field.x):
                 n = self.count_neighbors(i, j, tmp_state)
-                if (n == 3):
+                if (n in self.births):
                     self.current_state[i][j] = 1
-                elif (n == 2):
+                elif (n in self.stables):
                     continue
-                elif (n <= 1 or n > 3):
+                else:
                     self.current_state[i][j] = 0
 
         return self.current_state

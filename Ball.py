@@ -5,7 +5,7 @@ from Wall import Wall, distance_squared
 
 class Ball:
 
-    epsilon=1
+    epsilon=5
 
     def __init__(self,radius=5, spawn_point=Coords2D(0,0), acceleration=0):
         self.radius = radius

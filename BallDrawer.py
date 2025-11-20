@@ -30,7 +30,7 @@ class BallDrawer(Drawer):
 
 
     def next_state(self):
-        add_ball_flag=random.randint(0,3)
+        add_ball_flag=random.randint(0,10)
         if (add_ball_flag==1):
             self.balls.append(
                 Ball(random.randint(5, 20), Coords2D(random.randint(0, self.field.x), random.randint(0, self.field.y)),self.acceleration))
