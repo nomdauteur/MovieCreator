@@ -20,6 +20,9 @@ class Coords2D:
     def __sub__(self, other):
         return Coords2D(self.x - other.x, self.y - other.y)
 
+    def __mul__(self,coefficient): # by number
+        return Coords2D(self.x*coefficient, self.y*coefficient)
+
     def scalar_product(self,other):
         return self.x*other.x + self.y*other.y
 
@@ -85,9 +88,15 @@ class Coords2D:
     def angle(self,other):
         return math.acos(self.scalar_product(other)/(self.length()*other.length()))
 
-    def __mul__(self,coefficient): # by number
-        return Coords2D(self.x*coefficient, self.y*coefficient)
 
     @staticmethod
     def exists(pointer, size):
         return 0<=pointer.x<size.x and 0<=pointer.y<size.y
+
+    @staticmethod
+    def turn(vector, angle,start_point): # angle in rads
+        if start_point is None:
+            start_point = Coords2D(0, 0)
+        angle = - angle # computer axis
+        return (start_point+
+                Coords2D(vector.x*math.cos(angle) - vector.y*math.sin(angle), vector.x*math.sin(angle) + vector.y*math.cos(angle)))

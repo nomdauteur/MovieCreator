@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from PolyLineDrawer import PolyLineDrawer
 from Coords2D import Coords2D
 
@@ -38,6 +40,9 @@ class DragonCurve(PolyLineDrawer):
             #self.compute_scale()
         self.poly_lines.append(new_cell)
         self.matrix[self.poly_lines[-1].y][self.poly_lines[-1].x] = 1
+
+
+
 
 
     def next_state(self):
