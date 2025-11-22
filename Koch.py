@@ -1,6 +1,12 @@
+from copy import deepcopy
+import random
+
 from PolyLineDrawer import PolyLineDrawer
 from Coords2D import Coords2D
 import math
+import cv2
+from PIL import Image, ImageDraw, ImageFont
+
 
 class Koch(PolyLineDrawer):
 
@@ -9,29 +15,78 @@ class Koch(PolyLineDrawer):
         super().__init__(size, length, rate, field_size, border)
         self.side=side
         self.poly_lines=[]
+        self.max_iterations=max_iterations
         self.iter_no=0
-        for i in range(side):
-            for j in range(side):
-                #triangle
-                side_x = self.field.x/side
-                side_y = self.field.y / side
-                self.poly_lines.append(Coords2D(j*side_x+side_x/20,i*side_y+side_y*9/10))
-                self.poly_lines.append(Coords2D(j*side_x+side_x/2,(i+1)*side_y-243/400*side_y*side_y-side_y/10))
-                self.poly_lines.append(Coords2D(j*side_x+19*side_x/20,i*side_y+side_y*9/10))
+
+        A= Coords2D(3/20,7/10)
+        C=Coords2D(17/20,7/10)
+        B=Coords2D.turn(C-A,math.pi/3,A)
+        self.poly_lines.append(A)
+        self.poly_lines.append(B)
+        self.poly_lines.append(C)
+
 
     def get_all_states(self):
-        for i in range(0, self.max_iterations + 1):
+        self.states.append({"lines":self.poly_lines,"current_field_size":self.field, "side":self.side})
+
+        for i in range(0, self.max_iterations):
+            if (i == 2 and self.side>1):
+                self.side -=1
+            if (i == 4):
+                self.side -=min(2, self.side-1)
+            if (i == 6 ):
+                self.side  -=min(2, self.side-1)
+            if (i == 8 ):
+                self.side  -=min(2, self.side-1)
+            if (i == 10 ):
+                self.side  -=min(2, self.side-1)
             self.states.append(deepcopy(self.next_state()))
+
 
     def next_state(self):
         new_poly_lines=[]
         for i in range (len(self.poly_lines)-1):
             first_point=self.poly_lines[i]
             fifth_point=self.poly_lines[i+1]
-            second_point=Coords2D(first_point.x+1/3*(fifth_point.x-first_point.x),first_point.y+1/3*(fifth_point.y-first_point.y))
+            second_point=Coords2D.point_between(first_point,fifth_point,1/3)
             rotable_vector=second_point-first_point
-            third_point=second_point + Coords2D(rotable_vector.x*(-1/2)-rotable_vector.y*math.pow(3,1/2)/2,-rotable_vector.y*1/2+rotable_vector.x*math.pow(3,1/2)/2)
-            fourth_point=Coords2D(first_point.x+2/3*(fifth_point.x-first_point.x),first_point.y+2/3*(fifth_point.y-first_point.y))
-            new_poly_lines.extend([self.poly_lines[i],second_point,third_point,fourth_point,self.poly_lines[i+1]])
+            third_point=second_point + Coords2D.turn(rotable_vector,math.pi/3)
+            fourth_point=Coords2D.point_between(first_point,fifth_point,2/3)
+            new_poly_lines.extend([first_point,second_point,third_point,fourth_point,fifth_point])
+        #last line
+        first_point = self.poly_lines[-1]
+        fifth_point = self.poly_lines[0]
+        second_point = Coords2D.point_between(first_point,fifth_point,1/3)
+        rotable_vector = second_point - first_point
+        third_point = second_point + Coords2D.turn(rotable_vector,math.pi/3)
+        fourth_point = Coords2D.point_between(first_point,fifth_point,2/3)
+        new_poly_lines.extend([first_point, second_point, third_point, fourth_point, fifth_point])
         self.poly_lines=new_poly_lines
-        return {"lines":self.poly_lines,"current_field_size":self.field}
+        return {"lines":self.poly_lines,"current_field_size":self.field, "side":self.side}
+
+    def draw_image(self,state,size=None):
+        if size is None:
+            size = Coords2D(self.size.x, self.size.y)
+        img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
+        draw = ImageDraw.Draw(img)
+        self.compute_scale(size,state["current_field_size"])
+        #self.compute_scale(size, self.field) #resize once and for all?
+        side_x = self.field.x / state["side"]
+        side_y = self.field.y / state["side"]
+
+        for i in range(state["side"]):
+            for j in range(state["side"]):
+                offset_x = j * side_x
+                offset_y = i * side_y
+                to_draw=[(self.offset.x+(offset_x+v.x*side_x)*self.multiplier,
+                               self.offset.y+(offset_y+v.y*side_y)*self.multiplier) for v in state["lines"]]
+
+                draw.polygon(to_draw, outline=Koch.num_to_color(i+1), fill=Koch.num_to_color(i), width=5)
+
+
+        if (self.border):
+            self.draw_border(draw)
+
+        self.watermark(draw)
+
+        return img

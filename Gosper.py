@@ -12,7 +12,7 @@ class Gosper(PolyLineDrawer):
         super().__init__(size, length, rate, field_size, border)
         self.poly_lines[0] = init_point
         self.direction = Coords2D(0, -1)
-        self.axiom, self.tempAx, self.logic, self.count = 'A', '', {'A': 'A-B--B+A++AA+B-', 'B': '+A-BB--B-A++A+B'}, 5
+        self.axiom, self.tempAx, self.logic, self.count = 'A', '', {'A': 'A-B--B+A++AA+B-', 'B': '+A-BB--B-A++A+B'}, 4
         for i in range(self.count):
             for j in self.axiom:
                 self.tempAx += self.logic[j] if j in self.logic else j

@@ -110,6 +110,7 @@ class Drawer:
             for cadre in self.states:
 
                 img=self.draw_image(cadre,size)
+                #img.show()
                 #print("LOG: Plus image")
                 frame_rgb = np.array(img)
                 # Convert RGB to BGR (OpenCV's default color order)

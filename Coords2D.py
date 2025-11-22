@@ -94,9 +94,13 @@ class Coords2D:
         return 0<=pointer.x<size.x and 0<=pointer.y<size.y
 
     @staticmethod
-    def turn(vector, angle,start_point): # angle in rads
+    def turn(vector, angle,start_point=None): # angle in rads
         if start_point is None:
             start_point = Coords2D(0, 0)
         angle = - angle # computer axis
         return (start_point+
                 Coords2D(vector.x*math.cos(angle) - vector.y*math.sin(angle), vector.x*math.sin(angle) + vector.y*math.cos(angle)))
+
+    @staticmethod
+    def point_between(point1, point2, lyambda):
+        return point1+(point2-point1)*lyambda
