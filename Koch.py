@@ -18,8 +18,8 @@ class Koch(PolyLineDrawer):
         self.max_iterations=max_iterations
         self.iter_no=0
 
-        A= Coords2D(3/20,7/10)
-        C=Coords2D(17/20,7/10)
+        A= Coords2D(1/10,14/20)
+        C=Coords2D(18/20,14/20)
         B=Coords2D.turn(C-A,math.pi/3,A)
         self.poly_lines.append(A)
         self.poly_lines.append(B)
@@ -30,16 +30,7 @@ class Koch(PolyLineDrawer):
         self.states.append({"lines":self.poly_lines,"current_field_size":self.field, "side":self.side})
 
         for i in range(0, self.max_iterations):
-            if (i == 2 and self.side>1):
-                self.side -=1
-            if (i == 4):
-                self.side -=min(2, self.side-1)
-            if (i == 6 ):
-                self.side  -=min(2, self.side-1)
-            if (i == 8 ):
-                self.side  -=min(2, self.side-1)
-            if (i == 10 ):
-                self.side  -=min(2, self.side-1)
+
             self.states.append(deepcopy(self.next_state()))
 
 
@@ -81,7 +72,7 @@ class Koch(PolyLineDrawer):
                 to_draw=[(self.offset.x+(offset_x+v.x*side_x)*self.multiplier,
                                self.offset.y+(offset_y+v.y*side_y)*self.multiplier) for v in state["lines"]]
 
-                draw.polygon(to_draw, outline=Koch.num_to_color(i+1), fill=Koch.num_to_color(i), width=5)
+                draw.polygon(to_draw, outline="black", fill="yellow" if (i+j)%2==0 else (0, 100, 0), width=2)
 
 
         if (self.border):

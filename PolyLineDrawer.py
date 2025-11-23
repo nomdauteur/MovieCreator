@@ -89,7 +89,9 @@ class PolyLineDrawer(Drawer):
             size = Coords2D(self.size.x, self.size.y)
         img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
+
         self.compute_scale(size,state["current_field_size"])
+        self.grid(draw)
         #self.compute_scale(size, self.field) #resize once and for all?
         for i in range(0, len(state["lines"])-1):
             #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
@@ -100,7 +102,7 @@ class PolyLineDrawer(Drawer):
 
         if (self.border):
             self.draw_border(draw)
-        self.grid(draw)
+
         self.watermark(draw)
 
         return img
