@@ -7,6 +7,10 @@ from Coords2D import Coords2D
 
 class Gosper(PolyLineDrawer):
 
+    @staticmethod
+    def num_to_color(num):
+        return (0,0,0)
+
     def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False,
                  init_point=Coords2D(0, 0)):
         super().__init__(size, length, rate, field_size, border)

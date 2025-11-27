@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9fe8eaf8-2aad-4091-8665-30f80ea291d6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Koch.py" beforeDir="false" afterPath="$PROJECT_DIR$/Koch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PolyLineDrawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/PolyLineDrawer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coords2D.py" beforeDir="false" afterPath="$PROJECT_DIR$/Coords2D.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gosper.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gosper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Levy.py" beforeDir="false" afterPath="$PROJECT_DIR$/Levy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,22 +37,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.Ball.executor": "Run",
-    "Python.BallDrawer.executor": "Run",
-    "Python.DragonFractal.executor": "Run",
-    "Python.Drawer.executor": "Run",
-    "Python.GameOfLifeDrawer.executor": "Run",
-    "Python.PolyLineDrawer.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.Ball.executor&quot;: &quot;Run&quot;,
+    &quot;Python.BallDrawer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DragonFractal.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Drawer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.GameOfLifeDrawer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.PolyLineDrawer.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="MovieCreator" />

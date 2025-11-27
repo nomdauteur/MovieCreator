@@ -23,6 +23,9 @@ class Coords2D:
     def __mul__(self,coefficient): # by number
         return Coords2D(self.x*coefficient, self.y*coefficient)
 
+    def __truediv__(self,coefficient):
+        return Coords2D(self.x/coefficient, self.y/coefficient)
+
     def scalar_product(self,other):
         return self.x*other.x + self.y*other.y
 
