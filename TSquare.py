@@ -69,7 +69,7 @@ class TSquare(Drawer):
         #self.compute_scale(size, self.field) #resize once and for all?
         for i in range(0, math.floor(len(state["points"])/4)):
             #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
-            draw.polygon([(self.offset.x+v.x*self.multiplier,self.offset.y+v.y*self.multiplier) for v in state["points"][(4*i):(4*(i+1))]], outline="black", fill="black", width=2)
+            draw.polygon([(self.offset.x+v.x*self.multiplier,self.offset.y+v.y*self.multiplier) for v in state["points"][(4*i):(4*(i+1))]], outline=(43,44,90), fill=(43,44,90), width=2)
 
         if (self.border):
             self.draw_border(draw)

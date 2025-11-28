@@ -10,6 +10,7 @@ import Gosper
 import Levy
 import Cesaro
 import TSquare
+import HSquare
 
 height=1920
 width=800
@@ -32,6 +33,7 @@ for i in range(0,40):
 #drawer=Gosper.Gosper(Coords2D(1080,1920), 30, 700, field_size=Coords2D(20,20),border=True,init_point=Coords2D(0,10))
 #drawer= Levy.Levy(Coords2D(1080,1920), 3, 4, field_size=Coords2D(990, 1210),border=True,max_iterations=15)
 #drawer= Cesaro.Cesaro(Coords2D(1080,1920), 3, 1, field_size=Coords2D(1080,1080),border=False,max_iterations=7)
-drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
+#drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
+drawer=HSquare.HSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
 
 drawer.generate_video([Coords2D(1080,1920)])#
