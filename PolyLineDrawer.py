@@ -98,7 +98,7 @@ class PolyLineDrawer(Drawer):
             draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
                        self.offset.y+state["lines"][i].y*self.multiplier,
                        self.offset.x + state["lines"][i+1].x*self.multiplier,
-                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill=PolyLineDrawer.num_to_color(i), width=5)
+                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill=PolyLineDrawer.num_to_color(i), width=8)
 
         if (self.border):
             self.draw_border(draw)

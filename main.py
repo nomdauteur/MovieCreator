@@ -11,6 +11,7 @@ import Levy
 import Cesaro
 import TSquare
 import HSquare
+import Spiral
 
 height=1920
 width=800
@@ -34,6 +35,7 @@ for i in range(0,40):
 #drawer= Levy.Levy(Coords2D(1080,1920), 3, 4, field_size=Coords2D(990, 1210),border=True,max_iterations=15)
 #drawer= Cesaro.Cesaro(Coords2D(1080,1920), 3, 1, field_size=Coords2D(1080,1080),border=False,max_iterations=7)
 #drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
-drawer=HSquare.HSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
+#drawer=HSquare.HSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
+drawer=Spiral.Spiral(Coords2D(1080,1920), 30, 10, field_size=Coords2D(25,25),border=True)
 
 drawer.generate_video([Coords2D(1080,1920)])#
