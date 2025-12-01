@@ -12,15 +12,18 @@ class PolyLineDrawer(Drawer):
     def num_to_color(num):
         return (255 if num%3==0 else 0, 255 if num%3==1 else 0, 255 if num%3==2 else 0)
 
-    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False):
+    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, need_grid=True):
         super().__init__(size, length, rate, field_size, border)
+        self.need_grid=need_grid
 
         self.poly_lines=[]
-        self.poly_lines.append(Coords2D(random.randint(0,self.field.x),random.randint(0,self.field.y)))
         self.direction=None
         self.matrix=[[0 for _ in range(self.field.x)] for _ in range(self.field.y)]
 
     def next_state(self):
+        if self.poly_lines.__sizeof__()==0:
+            self.poly_lines.append(Coords2D(random.randint(0, self.field.x), random.randint(0, self.field.y)))
+
         self.time+=1
         print("LOG: current dir: {0}".format(self.direction))
 
@@ -91,14 +94,17 @@ class PolyLineDrawer(Drawer):
         draw = ImageDraw.Draw(img)
 
         self.compute_scale(size,state["current_field_size"])
-        self.grid(draw)
+        if (self.need_grid):
+            self.grid(draw)
         #self.compute_scale(size, self.field) #resize once and for all?
         for i in range(0, len(state["lines"])-1):
+            if state["lines"][i]==Coords2D(-1,-1) or state["lines"][i+1]==Coords2D(-1,-1):
+                continue
             #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
             draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
                        self.offset.y+state["lines"][i].y*self.multiplier,
                        self.offset.x + state["lines"][i+1].x*self.multiplier,
-                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill=PolyLineDrawer.num_to_color(i), width=8)
+                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill=self.fill(i), width=8)
 
         if (self.border):
             self.draw_border(draw)
@@ -106,6 +112,9 @@ class PolyLineDrawer(Drawer):
         self.watermark(draw)
 
         return img
+
+    def fill(self,number):
+        return PolyLineDrawer.num_to_color(number)
 
     def grid(self,draw):
         for i in range(self.field.y):

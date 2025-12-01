@@ -26,6 +26,9 @@ class Coords2D:
     def __truediv__(self,coefficient):
         return Coords2D(self.x/coefficient, self.y/coefficient)
 
+    def __eq__(self,other):
+        return self.x==other.x and self.y==other.y
+
     def scalar_product(self,other):
         return self.x*other.x + self.y*other.y
 
