@@ -13,6 +13,7 @@ import Cesaro
 import TSquare
 import HSquare
 import Spiral
+import LineSquare
 
 height=1920
 width=800
@@ -37,34 +38,23 @@ for i in range(0,40):
 #drawer= Cesaro.Cesaro(Coords2D(1080,1920), 3, 1, field_size=Coords2D(1080,1080),border=False,max_iterations=7)
 #drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
 #drawer=HSquare.HSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
-drawer=Spiral.Spiral(Coords2D(1080,1920), 30, 10, field_size=Coords2D(100,100),border=True)
+#drawer=Spiral.Spiral(Coords2D(1080,1920), 30, 10, field_size=Coords2D(100,100),border=True)
+drawer=LineSquare.LineSquare(Coords2D(1080,1920), 30, 30, field_size=Coords2D(500,500),border=False,side=5)
 
-
-'''radius = 25 * 0.58
-first_point = Coords2D(25 * 0.2, 25 * 0.92)
-fifth_point = first_point + Coords2D(radius, 0)
-second_point = Coords2D.turn(fifth_point-first_point,math.pi*108/180,first_point)
-third_point = Coords2D.turn(first_point-second_point,math.pi*108/180,second_point)
-fourth_point = Coords2D.turn(second_point-third_point,math.pi*108/180,third_point)
-drawer.add_config([first_point,second_point,third_point,fourth_point,fifth_point],0.15)'''
-
-radius = 40
-first_point = Coords2D(10, 90)
-second_point=Coords2D(50,90)
-third_point=Coords2D(90,90)
-fourth_point=Coords2D.turn(second_point-first_point,math.pi/3,first_point)
-fifth_point=fourth_point+second_point-first_point
-sixth_point=fourth_point+fourth_point-first_point
-drawer.add_config([first_point,second_point,fourth_point],0.2)
-drawer.add_config([second_point,fifth_point,fourth_point],0.2)
-drawer.add_config([third_point,fifth_point,second_point],0.2)
-drawer.add_config([fourth_point,fifth_point,sixth_point],0.2)
-
-'''radius = 25 * 0.9 
-first_point = Coords2D(25 * 0.05, 25 * 0.95)
+'''
+radius = 50 * 0.9
+first_point = Coords2D(5, 95)
 second_point = first_point + Coords2D(0, -radius)
 third_point = first_point + Coords2D(radius, -radius)
 fourth_point = first_point + Coords2D(radius, 0)
-drawer.add_config([first_point,second_point,third_point,fourth_point],0.1)'''
-
-drawer.generate_video([Coords2D(1080,1920)])#
+fifth_point = fourth_point + Coords2D(radius, -radius)
+sixth_point = fourth_point + Coords2D(radius, 0)
+seventh_point=second_point + Coords2D(0, -radius)
+eighth_point=third_point + Coords2D(0, -radius)
+ninth_point=fifth_point + Coords2D(0, -radius)
+drawer.add_config([first_point,second_point,third_point,fourth_point],0.1)
+drawer.add_config([fifth_point,sixth_point,fourth_point,third_point],0.1)
+drawer.add_config([eighth_point,third_point,second_point,seventh_point],0.1)
+drawer.add_config([ninth_point,fifth_point,third_point,eighth_point],0.1)
+'''
+drawer.generate_video([Coords2D(1080,1920)])

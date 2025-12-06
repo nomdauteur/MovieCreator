@@ -14,7 +14,7 @@ class Spiral(PolyLineDrawer):
 
     def add_config(self,config, lyambda):
         self.lyambda=lyambda
-        self.epsilon=self.field.x/25
+        self.epsilon=self.field.x/12
         self.init_vertices =len(config)
         self.curr_poly_lines=deepcopy(config)
         self.curr_poly_lines.append(deepcopy(config[0]))
@@ -39,6 +39,7 @@ class Spiral(PolyLineDrawer):
         return self.states
 
     def fill(self,number):
+        return (0,0,0)
         modulo=number%self.init_vertices
         match modulo:
             case 0:
