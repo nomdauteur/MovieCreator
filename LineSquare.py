@@ -23,7 +23,7 @@ class LineSquare(PolyLineDrawer):
         x = right_bottom.x
         curr_y=right_bottom.y
         while(curr_y>left_upper.y):
-            delta=10
+            delta=random.randint(5,20)
             curr_y-=delta
             result.append(Coords2D(x,max(curr_y,left_upper.y)))
         print("One side off")
@@ -31,7 +31,7 @@ class LineSquare(PolyLineDrawer):
         y = left_upper.y
         curr_x = right_bottom.x
         while (curr_x > left_upper.x):
-            delta=10
+            delta=random.randint(5,20)
             curr_x -= delta
             result.append(Coords2D(max(curr_x,left_upper.x), y))
         print("Second side off")
@@ -39,7 +39,7 @@ class LineSquare(PolyLineDrawer):
         x = left_upper.x
         curr_y = left_upper.y
         while (curr_y < right_bottom.y):
-            delta=10
+            delta=random.randint(5,20)
             curr_y += delta
             result.append(Coords2D(x, min(curr_y,right_bottom.y)))
         print("Third side off")
@@ -47,7 +47,7 @@ class LineSquare(PolyLineDrawer):
         y = right_bottom.y
         curr_x = left_upper.x
         while (curr_x < right_bottom.x):
-            delta=10
+            delta=random.randint(5,20)
             curr_x += delta
             result.append(Coords2D(min(curr_x,right_bottom.x), y))
         print("Square off")
@@ -63,7 +63,8 @@ class LineSquare(PolyLineDrawer):
                 square = self.get_square(i,j)
                 center=square["center"]
                 for r in square["result"]:
-                    curr_state.append({"line":[center.x,center.y,r.x,r.y],"width":random.randint(1,5)})
+                    end_point=Coords2D.point_between(center,r,random.uniform(0.7,1))
+                    curr_state.append({"line":[center.x,center.y,end_point.x,end_point.y],"width":random.randint(1,5)})
                     self.states.append(deepcopy(curr_state))
 
         return self.states

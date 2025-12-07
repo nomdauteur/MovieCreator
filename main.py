@@ -14,10 +14,13 @@ import TSquare
 import HSquare
 import Spiral
 import LineSquare
+import MonteCarlo
+import PointyDraw
+import Rose
 
 height=1920
 width=800
-
+'''
 init_state=[[0 for _ in range(200)] for _ in range(200)]
 for i in range(0,40):
     rand=random.randint(0,5)
@@ -25,7 +28,7 @@ for i in range(0,40):
         for a in range(0,5):
             for b in range(0, 5):
                 init_state[5*i+a][5*i+b]=random.randint(0,1)
-
+'''
 
 #drawer = GameOfLifeDrawer.GameOfLifeDrawer(Coords2D(1080,1920),15,30,Coords2D(200,200), True,births=[3],stables=[0,1,2,3,4,5,6,7,8],initial_state=init_state)
 #drawer = Drawer.Drawer((600,1000),10,1,(20,20))
@@ -39,8 +42,9 @@ for i in range(0,40):
 #drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
 #drawer=HSquare.HSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
 #drawer=Spiral.Spiral(Coords2D(1080,1920), 30, 10, field_size=Coords2D(100,100),border=True)
-drawer=LineSquare.LineSquare(Coords2D(1080,1920), 30, 30, field_size=Coords2D(500,500),border=False,side=5)
-
+#drawer=LineSquare.LineSquare(Coords2D(1080,1920), 30, 30, field_size=Coords2D(500,500),border=False,side=5)
+#drawer=PointyDraw.PointyDraw(Coords2D(1080,1920), 30, 100, field_size=Coords2D(40,40),border=False)
+drawer=Rose.Rose(Coords2D(1080,1920), 30, 100, field_size=Coords2D(200,200),border=False,k=1/6)
 '''
 radius = 50 * 0.9
 first_point = Coords2D(5, 95)
