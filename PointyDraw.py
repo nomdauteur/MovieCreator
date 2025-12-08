@@ -14,7 +14,7 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
     def num_to_color(num):
         return (255 if num%3==0 else 0, 255 if num%3==1 else 0, 255 if num%3==2 else 0)
 
-    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, need_grid=False):
+    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, need_grid=True):
         super().__init__(size, length, rate, field_size, border)
         self.need_grid=need_grid
         self.phi=0
@@ -78,7 +78,7 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
                 if (state[i][j] == 0):
                     continue
                 if (state[i][j]==1):
-                    color="black"
+                    color="red"
                 if (self.matrix[i][j]==-1):
                     color="gray"
                 draw.rectangle((self.offset.x+j*self.multiplier,self.offset.y+i*self.multiplier,self.offset.x+(j+1)*self.multiplier,self.offset.y+(i+1)*self.multiplier),fill=color)
@@ -90,19 +90,17 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
 
         return img
 
-    def fill(self,number):
-        return PolyLineDrawer.num_to_color(number)
 
     def grid(self,draw):
-        for i in range(self.field.y):
+        for i in range(11):
             draw.line([self.offset.x,
-                           self.offset.y+i * self.multiplier,
-                           self.offset.x + self.field.x * self.multiplier,
-                           self.offset.y+i*self.multiplier], fill="lightcyan", width=2)
+                           self.offset.y+i *self.field.x/10 * self.multiplier,
+                           self.offset.x + self.field.x *self.multiplier,
+                           self.offset.y+i *self.field.x/10*self.multiplier], fill="lightcyan", width=2)
 
-        for i in range(self.field.x):
-            draw.line([self.offset.x +i * self.multiplier,
+        for i in range(11):
+            draw.line([self.offset.x +i  *self.field.x/10* self.multiplier,
                        self.offset.y,
-                           self.offset.x + i * self.multiplier,
-                           self.offset.y+self.field.y*self.multiplier], fill="lightcyan", width=2)
+                           self.offset.x + i  *self.field.x/10* self.multiplier,
+                           self.offset.y+self.field.y *self.multiplier], fill="lightcyan", width=2)
 

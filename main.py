@@ -17,6 +17,7 @@ import LineSquare
 import MonteCarlo
 import PointyDraw
 import Rose
+import MaurerRose
 
 height=1920
 width=800
@@ -44,7 +45,8 @@ for i in range(0,40):
 #drawer=Spiral.Spiral(Coords2D(1080,1920), 30, 10, field_size=Coords2D(100,100),border=True)
 #drawer=LineSquare.LineSquare(Coords2D(1080,1920), 30, 30, field_size=Coords2D(500,500),border=False,side=5)
 #drawer=PointyDraw.PointyDraw(Coords2D(1080,1920), 30, 100, field_size=Coords2D(40,40),border=False)
-drawer=Rose.Rose(Coords2D(1080,1920), 30, 100, field_size=Coords2D(200,200),border=False,k=1/6)
+#drawer=Rose.Rose(Coords2D(1080,1920), 30, 100, field_size=Coords2D(200,200),border=False,k_up=4,k_down=9)
+drawer=MaurerRose.MaurerRose(Coords2D(1080,1920), 30, 50, field_size=Coords2D(200,200),border=False,n=2,d=39)
 '''
 radius = 50 * 0.9
 first_point = Coords2D(5, 95)

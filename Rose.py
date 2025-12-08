@@ -4,12 +4,14 @@ from Coords2D import Coords2D
 
 
 class Rose(PointyDraw):
-    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, need_grid=False, k=1):
+    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, need_grid=True, k_up=1,k_down=1):
         super().__init__(size, length, rate, field_size, border,need_grid)
-        self.k=k
+        self.k_up = k_up
+        self.k_down = k_down
+        self.k=k_up/k_down
 
     def continue_condition(self):
-        return (self.k*self.phi <=2*math.pi)
+        return (self.phi/self.k_down <=2*math.pi)
 
     def next_point(self,center,radius):
         print("Phi is: {0} pi".format(self.phi/math.pi))
