@@ -36,7 +36,7 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
 
     def next_state(self):
         delta_phi=math.pi/180
-        radius=self.field.x*0.45
+        radius=self.field.x*0.3
         center=Coords2D(self.field.x*0.5,self.field.y*0.5)
         next_point=self.next_point(center,radius)
         #print(point)
@@ -78,7 +78,7 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
                 if (state[i][j] == 0):
                     continue
                 if (state[i][j]==1):
-                    color="red"
+                    color="darkgreen"
                 if (self.matrix[i][j]==-1):
                     color="gray"
                 draw.rectangle((self.offset.x+j*self.multiplier,self.offset.y+i*self.multiplier,self.offset.x+(j+1)*self.multiplier,self.offset.y+(i+1)*self.multiplier),fill=color)

@@ -18,6 +18,7 @@ import MonteCarlo
 import PointyDraw
 import Rose
 import MaurerRose
+import Spirograph
 
 height=1920
 width=800
@@ -46,21 +47,6 @@ for i in range(0,40):
 #drawer=LineSquare.LineSquare(Coords2D(1080,1920), 30, 30, field_size=Coords2D(500,500),border=False,side=5)
 #drawer=PointyDraw.PointyDraw(Coords2D(1080,1920), 30, 100, field_size=Coords2D(40,40),border=False)
 #drawer=Rose.Rose(Coords2D(1080,1920), 30, 100, field_size=Coords2D(200,200),border=False,k_up=4,k_down=9)
-drawer=MaurerRose.MaurerRose(Coords2D(1080,1920), 30, 50, field_size=Coords2D(200,200),border=False,n=2,d=39)
-'''
-radius = 50 * 0.9
-first_point = Coords2D(5, 95)
-second_point = first_point + Coords2D(0, -radius)
-third_point = first_point + Coords2D(radius, -radius)
-fourth_point = first_point + Coords2D(radius, 0)
-fifth_point = fourth_point + Coords2D(radius, -radius)
-sixth_point = fourth_point + Coords2D(radius, 0)
-seventh_point=second_point + Coords2D(0, -radius)
-eighth_point=third_point + Coords2D(0, -radius)
-ninth_point=fifth_point + Coords2D(0, -radius)
-drawer.add_config([first_point,second_point,third_point,fourth_point],0.1)
-drawer.add_config([fifth_point,sixth_point,fourth_point,third_point],0.1)
-drawer.add_config([eighth_point,third_point,second_point,seventh_point],0.1)
-drawer.add_config([ninth_point,fifth_point,third_point,eighth_point],0.1)
-'''
+#drawer=MaurerRose.MaurerRose(Coords2D(1080,1920), 30, 50, field_size=Coords2D(200,200),border=False,n=6,d=71)
+drawer=Spirograph.Spirograph(Coords2D(1080,1920), 30, 100, field_size=Coords2D(200,200),border=False,k=random.uniform(0.0001,0.9999),l=random.uniform(0.0001,0.9999))
 drawer.generate_video([Coords2D(1080,1920)])
