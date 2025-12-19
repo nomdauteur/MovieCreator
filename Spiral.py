@@ -39,7 +39,7 @@ class Spiral(PolyLineDrawer):
         return self.states
 
     def fill(self,number):
-        return (0,0,0)
+        return "red" #(0,0,0)
         modulo=number%self.init_vertices
         match modulo:
             case 0:

@@ -110,3 +110,11 @@ class Coords2D:
     @staticmethod
     def point_between(point1, point2, lyambda):
         return point1+(point2-point1)*lyambda
+
+    @staticmethod
+    def make_regular_polygon(vertices_no, center, radius):
+        angle=math.pi*2/vertices_no
+        points=[]
+        for i in range(vertices_no):
+            points.append(center + Coords2D(-math.sin(angle*(0.5+i)),math.cos(angle*(0.5+i)))*radius)
+        return points

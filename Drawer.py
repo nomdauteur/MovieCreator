@@ -54,6 +54,9 @@ class Drawer:
         self.offset.x = (size.x - self.field.x * self.multiplier) / 2
         self.offset.y = (size.y - self.field.y * self.multiplier) / 2
 
+    def offset_point(self,point):
+        return Coords2D(self.offset.x,self.offset.y)+point*self.multiplier
+
     def draw_image(self,state,size=None):
         if size is None:
             size = Coords2D(self.size.x, self.size.y)

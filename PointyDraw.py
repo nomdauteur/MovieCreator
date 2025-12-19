@@ -20,6 +20,8 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
         self.phi=0
         # -1 for check unmatch, 0 for uncheck, 1 for check match
         self.matrix=[[0 for _ in range(self.field.x)] for _ in range(self.field.y)]
+        self.iter_no=0
+        self.points=[]
 
 
     '''@staticmethod
@@ -35,16 +37,19 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
         return {"real":point_real,"int":point}
 
     def next_state(self):
+        self.iter_no+=1
         delta_phi=math.pi/180
         radius=self.field.x*0.3
         center=Coords2D(self.field.x*0.5,self.field.y*0.5)
         next_point=self.next_point(center,radius)
+        self.points.append(next_point["real"])
         #print(point)
-        self.matrix[next_point["int"].y][next_point["int"].x]=1
+        if (Coords2D.exists(next_point["int"],self.field)):
+            self.matrix[next_point["int"].y][next_point["int"].x]=self.iter_no
 
         self.phi+=delta_phi
 
-        return deepcopy(self.matrix)
+        return deepcopy(self.iter_no)
 
     def continue_condition(self):
         return (self.phi <=2*math.pi)
@@ -75,13 +80,10 @@ class PointyDraw(Drawer): #MonteCarlo, but not random (mostly for circular stuff
         #self.compute_scale(size, self.field) #resize once and for all?
         for i in range(self.field.y):
             for j in range(self.field.x):
-                if (state[i][j] == 0):
-                    continue
-                if (state[i][j]==1):
+                if (self.matrix[i][j]>0 and self.matrix[i][j]<=state):
                     color="darkgreen"
-                if (self.matrix[i][j]==-1):
-                    color="gray"
-                draw.rectangle((self.offset.x+j*self.multiplier,self.offset.y+i*self.multiplier,self.offset.x+(j+1)*self.multiplier,self.offset.y+(i+1)*self.multiplier),fill=color)
+                    draw.rectangle((self.offset.x+j*self.multiplier,self.offset.y+i*self.multiplier,self.offset.x+(j+1)*self.multiplier,self.offset.y+(i+1)*self.multiplier),fill=color)
+
 
         if (self.border):
             self.draw_border(draw)
