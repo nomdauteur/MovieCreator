@@ -23,6 +23,8 @@ import Harmonograph
 import ChaosGame
 import TimesCircle
 import GrowingBallDrawer
+import ShrinkingWallDrawer
+import CollidingSpawnDrawer
 
 height=1920
 width=800
@@ -57,5 +59,6 @@ for i in range(0,40):
 #a=[1,0,1,0],f=[10.1,0,60.1,0],p=[1.2,0,15.1,0],d=[0.005,0,0.04,0] - sharp pikes
 #a=[1,0,1,0],f=[70.1,0,10.1,0],p=[1.2,0,15.1,0],d=[0.5,0,0.04,0] - VASE
 
-drawer=GrowingBallDrawer.GrowingBallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),20,True,100)
+#drawer=ShrinkingWallDrawer.ShrinkingWallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),20,False,100)
+drawer=CollidingSpawnDrawer.CollidingSpawnDrawer(Coords2D(1080,1920), 30, Coords2D(500,500),20,False,100)
 drawer.generate_video([Coords2D(1080,1920)])

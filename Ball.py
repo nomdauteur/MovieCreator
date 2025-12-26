@@ -5,14 +5,16 @@ from Wall import Wall, distance_squared
 
 class Ball:
 
-    epsilon=1
+    epsilon=10
 
-    def __init__(self,radius=5, spawn_point=Coords2D(0,0), acceleration=0):
+    def __init__(self,radius=5, spawn_point=Coords2D(0,0), acceleration=0, color=None):
+        if color is None:
+            color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
         self.radius = radius
         self.spawn_point = spawn_point
         self.current_point=self.spawn_point
-        self.color=(random.randint(0,255),random.randint(0,255),random.randint(0,255))
-        self.speed=Coords2D(random.randint(50,300),random.randint(50,300))
+        self.color=color
+        self.speed=Coords2D(random.randint(200,300),random.randint(200,300))
         self.acceleration=Coords2D(0,acceleration)
 
     def add_force(self, force=Coords2D(0,0)):
@@ -37,23 +39,25 @@ class Ball:
         self.current_point=self.current_point+self.speed*time_unit
         self.speed=self.speed+self.acceleration*time_unit
         if walls_count>1:
-            print("Ball hit a corner, reflecting")
             self.reflect()
             self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
         elif (bounceable_wall is not None):
-            print("Ball with radius {0} standing on ({2},{3})will bounce from the {1} wall".format(self.radius,bounceable_wall.kind(),self.current_point.x,self.current_point.y))
             self.bounce(bounceable_wall)
             self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
         self.unhole(walls)
 
     def unhole(self,walls):
-        field_x=0
-        field_y=0
+        field_x_start=1000000000
+        field_y_start=1000000000
+        field_x_end = 0
+        field_y_end = 0
         for w in walls:
-            field_x=max(field_x,w.start.x,w.end.x)
-            field_y = max(field_y, w.start.y, w.end.y)
-        self.current_point = Coords2D(min(max(self.radius, self.current_point.x), field_x-self.radius),
-                                      min(max(self.radius, self.current_point.y), field_y-self.radius))
+            field_x_end=max(field_x_end,w.start.x,w.end.x)
+            field_y_end = max(field_y_end, w.start.y, w.end.y)
+            field_x_start = min(field_x_end, w.start.x, w.end.x)
+            field_y_start = min(field_y_end, w.start.y, w.end.y)
+        self.current_point = Coords2D(min(max(self.radius+field_x_start, self.current_point.x), field_x_end-self.radius),
+                                      min(max(self.radius+field_y_start, self.current_point.y), field_y_end-self.radius))
 
 
 
@@ -68,13 +72,14 @@ class Ball:
 
     def should_bounce(self, wall, time_unit):
         next_place=self.current_point+self.speed*time_unit
+        #print("Check against the wall ({0},{1}), ({2},{3})".format(wall.start.x,wall.start.y,wall.end.x,wall.end.y))
 
         # for now consider walls as borders strictly
         kind = wall.kind()
         #print("{0} wall".format(kind))
-        return ((kind == "left" and next_place.x-self.radius < Ball.epsilon)
+        return ((kind == "left" and next_place.x-self.radius < Ball.epsilon+wall.start.x)
                 or (kind == "right" and next_place.x+self.radius > Ball.epsilon + wall.start.x)
-                or (kind == "upper" and next_place.y-self.radius < Ball.epsilon)
+                or (kind == "upper" and next_place.y-self.radius < Ball.epsilon+wall.start.y)
                 or (kind == "lower" and next_place.y+self.radius > Ball.epsilon + wall.start.y)
                 )
         """intersection=Coords2D.segments_intersect(self.current_point,next_place, wall.start,wall.end)

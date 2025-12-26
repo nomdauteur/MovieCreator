@@ -65,6 +65,16 @@ class Coords2D:
         )
 
     @staticmethod
+    def point_line_distance(point, l1,l2):
+        # line is Ax+By+C=0
+        A = l2.y-l1.y
+        B=l1.x-l2.x
+        C=-(A*l1.x+B*l1.y)
+        if (A==0 and B==0):
+            return 0
+        return (math.fabs(A*point.x+B*point.y+C))/(math.sqrt(A*A+B*B))
+
+    @staticmethod
     def segments_intersect(A,B,C,D):
         # Line AB represented as a1x + b1y = c1
         a1 = B.y - A.y
@@ -98,6 +108,9 @@ class Coords2D:
     @staticmethod
     def exists(pointer, size):
         return 0<=pointer.x<size.x and 0<=pointer.y<size.y
+
+    def exists_between(pointer, size):
+        return size[0]<=pointer.x<size[2] and size[1]<=pointer.y<size[3]
 
     @staticmethod
     def turn(vector, angle,start_point=None): # angle in rads
