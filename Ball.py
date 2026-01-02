@@ -1,4 +1,6 @@
 import random
+from copy import deepcopy
+
 from Coords2D import Coords2D
 from Wall import Wall, distance_squared
 
@@ -46,6 +48,12 @@ class Ball:
             self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
         self.unhole(walls)
 
+        if should:
+            return {"collision":True,"collision_point":deepcopy(self.current_point)}
+        else:
+            return {"collision": False}
+
+
     def unhole(self,walls):
         field_x_start=1000000000
         field_y_start=1000000000
@@ -65,6 +73,7 @@ class Ball:
         #print("LOG: Ball bounces, speed now: {0},{1}".format(self.speed.x,self.speed.y) )
         self.speed=self.speed-wall.normal_vector()*2*Coords2D.scalar_product(self.speed,wall.normal_vector())
         #print("LOG: Ball bounced, speed now: {0},{1}".format(self.speed.x, self.speed.y))
+
     def reflect(self):
         #print("LOG: Ball bounces, speed now: {0},{1}".format(self.speed.x,self.speed.y) )
         self.speed=self.speed * -1

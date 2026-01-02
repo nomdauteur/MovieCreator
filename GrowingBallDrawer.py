@@ -1,8 +1,20 @@
+import math
+import os
+
+import subprocess
+
 from Drawer import Drawer
 from Coords2D import Coords2D
 from Ball import Ball
 from Wall import Wall
 import random
+
+from mingus.containers.note import Note
+from mingus.containers.note_container import NoteContainer
+from mingus.containers.bar import Bar
+from mingus.containers.track import Track
+import mingus.midi.midi_file_out as midi_file_out
+from moviepy import VideoFileClip, AudioFileClip
 
 import cv2
 from PIL import Image, ImageDraw, ImageFont
@@ -36,9 +48,13 @@ class GrowingBallDrawer(Drawer):
     def next_state(self):
 
         self.ball.change_size(0.3)
-        self.ball.step(self.time_unit,self.walls)
+        step = self.ball.step(self.time_unit,self.walls)
         self.time+=self.time_unit
         state={"iter_no":0,"walls":[]}
+        if step["collision"]:
+            state["collided"]=step["collision_point"]
+        else:
+            state["collided"]=None
         self.circles.append({"center":self.ball.current_point,"radius":self.ball.radius,"color":self.ball.color})
         state["iter_no"]=deepcopy(self.iter_no)
         self.iter_no+=1
@@ -63,3 +79,54 @@ class GrowingBallDrawer(Drawer):
         self.watermark(draw)
 
         return img
+
+    def get_note_container(self,state):
+        if state["collided"] is None:
+            return None
+        c = Note()
+        c.from_int(state["iter_no"] % 60)
+        return c
+
+
+    def add_audio(self):
+        b = Bar()
+        t = Track()
+        b.set_meter((self.rate,self.rate))
+        bar_filling = 0
+        for s in self.states:
+            notes = self.get_note_container(s)
+            b.place_notes(notes,self.rate)
+            bar_filling+=1
+            if (bar_filling == self.rate):
+                print(len(b))
+                t+b
+                b = Bar()
+                b.set_meter((self.rate, self.rate))
+                bar_filling = 0
+        t+b
+        midi_file_out.write_Track("audio_assets/aaa.mid",t, bpm = 60*4)
+
+        try:
+            result = subprocess.run(
+                ["fluidsynth", "-g", "3.0", "-F", "audio_assets/aaa.wav", "audio_assets/FluidR3_GM.sf2", "audio_assets/aaa.mid"],
+                check=True, capture_output=True, text=True)
+            print("Command ran successfully.")
+            print("Output:\n", result.stdout)
+        except subprocess.CalledProcessError as e:
+            print("Command failed with return code", e.returncode)
+            print("Error output:\n", e.stderr)
+        except FileNotFoundError:
+            print("The command was not found. For Windows, try ['cmd', '/c', 'dir']")
+
+        video_clip = VideoFileClip(self.file_name + str(self.size.x)+'_'+str(self.size.y)+'.mp4')
+
+
+        audio_clip = AudioFileClip("audio_assets/aaa.wav")
+
+        # Set the audio of the video clip to the new audio clip
+        final_clip = video_clip.with_audio(audio_clip)
+
+        # Write the final file (MoviePy handles the muxing internally using FFmpeg)
+
+        final_clip.write_videofile(self.file_name+".mp4", codec="libx264", audio_codec="aac")
+
