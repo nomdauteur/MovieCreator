@@ -1,3 +1,15 @@
+import math
+import os
+
+import subprocess
+
+from mingus.containers.note import Note
+from mingus.containers.note_container import NoteContainer
+from mingus.containers.bar import Bar
+from mingus.containers.track import Track
+import mingus.midi.midi_file_out as midi_file_out
+from moviepy import VideoFileClip, AudioFileClip
+
 import random
 import cv2
 from PIL import Image, ImageDraw, ImageFont
@@ -121,6 +133,54 @@ class Drawer:
                 out.write(frame_bgr)
             cv2.destroyAllWindows()
             out.release()
+
+    def get_note_container(self,state):
+        return None
+
+    def add_audio(self):
+        b = Bar()
+        t = Track()
+        b.set_meter((self.rate,self.rate))
+        bar_filling = 0
+        print("I have {0} states: {1} seconds".format(len(self.states), len(self.states)/self.rate))
+        for s in self.states:
+            notes = self.get_note_container(s)
+            b.place_notes(notes,self.rate)
+            bar_filling+=1
+            if (bar_filling == self.rate):
+                print(len(b))
+                t+b
+                b = Bar()
+                b.set_meter((self.rate, self.rate))
+                bar_filling = 0
+        t+b
+        midi_file_out.write_Track("audio_assets/aaa.mid",t, bpm = 60*4)
+
+        try:
+            result = subprocess.run(
+                ["fluidsynth", "-g", "3.0", "-F", "audio_assets/aaa.wav", "audio_assets/FluidR3_GM.sf2", "audio_assets/aaa.mid"],
+                check=True, capture_output=True, text=True)
+            print("Command ran successfully.")
+            print("Output:\n", result.stdout)
+        except subprocess.CalledProcessError as e:
+            print("Command failed with return code", e.returncode)
+            print("Error output:\n", e.stderr)
+        except FileNotFoundError:
+            print("The command was not found. For Windows, try ['cmd', '/c', 'dir']")
+
+        video_clip = VideoFileClip(self.file_name + str(self.size.x)+'_'+str(self.size.y)+'.mp4')
+
+
+        audio_clip = AudioFileClip("audio_assets/aaa.wav")
+
+        # Set the audio of the video clip to the new audio clip
+        final_clip = video_clip.with_audio(audio_clip)
+
+        # Write the final file (MoviePy handles the muxing internally using FFmpeg)
+
+        final_clip.write_videofile(self.file_name+".mp4", codec="libx264", audio_codec="aac")
+
+
 
 
 

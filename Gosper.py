@@ -1,5 +1,8 @@
 import math
 from copy import deepcopy
+from mingus.containers.note import Note
+import music
+
 
 from PolyLineDrawer import PolyLineDrawer
 from Coords2D import Coords2D
@@ -14,8 +17,9 @@ class Gosper(PolyLineDrawer):
     def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False,
                  init_point=Coords2D(0, 0)):
         super().__init__(size, length, rate, field_size, border)
-        self.poly_lines[0] = init_point
+        self.poly_lines = [init_point]
         self.direction = Coords2D(0, -1)
+        self.line_no=0
         self.axiom, self.tempAx, self.logic, self.count = 'A', '', {'A': 'A-B--B+A++AA+B-', 'B': '+A-BB--B-A++A+B'}, 4
         for i in range(self.count):
             for j in self.axiom:
@@ -64,5 +68,15 @@ class Gosper(PolyLineDrawer):
 
                 case _:
                     self.step(self.direction)
+                    self.line_no+=1
             self.axiom_counter += 1
-        return {"lines": self.poly_lines, "current_field_size": self.field}
+        return {"lines_no": deepcopy(self.line_no), "current_field_size": self.field}
+
+    def get_note_container(self,state):
+        notes_quantity = 88
+        direction = int(math.floor(state["lines_no"]/notes_quantity)) % 2
+        note_number = notes_quantity*direction + math.pow(-1,direction) * (state["lines_no"] % notes_quantity)
+        c = Note()
+        c.from_int(int(math.floor(note_number)))
+        return c
+

@@ -1,10 +1,12 @@
+import math
 import random
 
 from Drawer import Drawer
 from Coords2D import Coords2D
 import cv2
 from PIL import Image, ImageDraw, ImageFont
-
+from moviepy import VideoFileClip, AudioFileClip
+import music
 
 class PolyLineDrawer(Drawer):
 
@@ -92,19 +94,30 @@ class PolyLineDrawer(Drawer):
             size = Coords2D(self.size.x, self.size.y)
         img = Image.new("RGB", (size.x,size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
-
-        self.compute_scale(size,state["current_field_size"])
+        self.compute_scale(size, self.field)  # resize once and for all?
+        #self.compute_scale(size,state["current_field_size"])
         if (self.need_grid):
             self.grid(draw)
-        #self.compute_scale(size, self.field) #resize once and for all?
-        for i in range(0, len(state["lines"])-1):
-            if state["lines"][i]==Coords2D(-1,-1) or state["lines"][i+1]==Coords2D(-1,-1):
-                continue
-            #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
-            draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
-                       self.offset.y+state["lines"][i].y*self.multiplier,
-                       self.offset.x + state["lines"][i+1].x*self.multiplier,
-                       self.offset.y+state["lines"][i+1].y*self.multiplier], fill=self.fill(i), width=8)
+
+        if state["lines_no"] is not None:
+            for i in range(0, state["lines_no"]):
+                if self.poly_lines[i]==Coords2D(-1,-1) or self.poly_lines[i+1]==Coords2D(-1,-1):
+                    continue
+                #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
+                draw.line([self.offset.x+self.poly_lines[i].x*self.multiplier,
+                           self.offset.y+self.poly_lines[i].y*self.multiplier,
+                           self.offset.x + self.poly_lines[i+1].x*self.multiplier,
+                           self.offset.y+self.poly_lines[i+1].y*self.multiplier], fill=self.fill(i), width=8)
+
+        elif state["lines"] is not None:
+            for i in range(0, len(state["lines"])-1):
+                if state["lines"][i]==Coords2D(-1,-1) or state["lines"][i+1]==Coords2D(-1,-1):
+                    continue
+                #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
+                draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
+                           self.offset.y+state["lines"][i].y*self.multiplier,
+                           self.offset.x + state["lines"][i+1].x*self.multiplier,
+                           self.offset.y+state["lines"][i+1].y*self.multiplier], fill=self.fill(i), width=8)
 
         if (self.border):
             self.draw_border(draw)
@@ -129,3 +142,30 @@ class PolyLineDrawer(Drawer):
                            self.offset.x + i * self.multiplier,
                            self.offset.y+self.field.y*self.multiplier], fill="lightcyan", width=2)
 
+
+    def alternative_add_audio(self):
+        sonic_vector = []
+        notes_quantity=88
+        for s in self.states:
+            direction = s["lines_no"]  % 2
+            note_number = notes_quantity * direction + math.pow(-1, direction) * (s["lines_no"] % notes_quantity)
+
+            sound = music.core.synths.note(freq=15* note_number,
+                                           duration=1.0/self.rate)
+            sonic_vector.append(sound)
+        stack = music.utils.horizontal_stack(*sonic_vector)
+
+        music.core.io.write_wav_mono(sonic_vector=stack,
+                                     filename='audio_assets/aaa.wav')
+
+        video_clip = VideoFileClip(self.file_name + str(self.size.x)+'_'+str(self.size.y)+'.mp4')
+
+
+        audio_clip = AudioFileClip("audio_assets/aaa.wav")
+
+        # Set the audio of the video clip to the new audio clip
+        final_clip = video_clip.with_audio(audio_clip)
+
+        # Write the final file (MoviePy handles the muxing internally using FFmpeg)
+
+        final_clip.write_videofile(self.file_name+".mp4", codec="libx264", audio_codec="aac")

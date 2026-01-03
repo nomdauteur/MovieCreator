@@ -7,14 +7,16 @@ class DragonCurve(PolyLineDrawer):
 
     def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, init_point=Coords2D(0,0)):
         super().__init__(size, length, rate, field_size, border)
-        self.poly_lines[0]=init_point
+        self.poly_lines=[init_point]
         self.direction=Coords2D(1,0)
-        self.axiom, self.tempAx, self.logic, self.count = 'FX', '', {'X': 'X+YF+', 'Y': '−FX−Y'}, 15
+        self.lines_no=0
+        self.axiom, self.tempAx, self.logic, self.count = 'FX', '', {'X': 'X+YF+', 'Y': '−FX−Y'}, 11
         for i in range(self.count):
             for j in self.axiom:
                 self.tempAx += self.logic[j] if j in self.logic else j
             self.axiom, self.tempAx = self.tempAx, ''
             self.axiom_counter=0
+            print("{0} iteration has length of {1}".format(i,len(self.axiom)))
 
     def step(self, direction):
         new_cell=self.poly_lines[-1]+direction
@@ -42,7 +44,9 @@ class DragonCurve(PolyLineDrawer):
         self.matrix[self.poly_lines[-1].y][self.poly_lines[-1].x] = 1
 
 
-
+    def get_all_states(self): #not by hard time but by ending of figure
+        while(self.axiom_counter < len(self.axiom)):
+            self.states.append(deepcopy(self.next_state()))
 
 
     def next_state(self):
@@ -50,9 +54,10 @@ class DragonCurve(PolyLineDrawer):
             match self.axiom[self.axiom_counter]:
                 case 'F':
                     self.step(self.direction)
+                    self.lines_no+=1
                 case '+':
                     self.direction=Coords2D(-self.direction.y, self.direction.x)
                 case '−':
                     self.direction=Coords2D(self.direction.y, -self.direction.x)
             self.axiom_counter+=1
-        return {"lines":self.poly_lines,"current_field_size":self.field}
+        return {"lines_no":deepcopy(self.lines_no),"current_field_size":self.field}

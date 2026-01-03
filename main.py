@@ -44,9 +44,9 @@ for i in range(0,40):
 #drawer = Drawer.Drawer((600,1000),10,1,(20,20))
 #drawer=BallDrawer.BallDrawer(Coords2D(1080,1920), 60, Coords2D(500,700),20,True,100)
 #drawer=PolyLineDrawer.PolyLineDrawer(Coords2D(800,1920), 10, 10, Coords2D(20,20),True)
-#drawer=DragonCurve.DragonCurve(Coords2D(1080,1920), 60, 30, field_size=Coords2D(30,30),border=True,init_point=Coords2D(5,10))
+
 #drawer= Koch.Koch(Coords2D(1080,1920), 3, 1, field_size=Coords2D(400,400),border=True,side=1,max_iterations=7)
-#drawer=Gosper.Gosper(Coords2D(1080,1920), 30, 700, field_size=Coords2D(20,20),border=True,init_point=Coords2D(0,10))
+
 #drawer= Levy.Levy(Coords2D(1080,1920), 3, 4, field_size=Coords2D(990, 1210),border=True,max_iterations=15)
 #drawer= Cesaro.Cesaro(Coords2D(1080,1920), 3, 1, field_size=Coords2D(1080,1080),border=False,max_iterations=7)
 #drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
@@ -64,6 +64,8 @@ for i in range(0,40):
 #drawer=ShrinkingWallDrawer.ShrinkingWallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),20,False,100)
 #drawer=CollidingSpawnDrawer.CollidingSpawnDrawer(Coords2D(1080,1920), 30, Coords2D(500,500),20,False,100)
 #drawer=MarchingSquares.MarchingSquares(Coords2D(1080,1920), 20, Coords2D(1000,1000),5,False,200,base_color=(0,100,0),line_color=(255,155,255))
-drawer=GrowingBallDrawer.GrowingBallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),32,False,100)
+#drawer=GrowingBallDrawer.GrowingBallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),32,False,100)
+#drawer=Gosper.Gosper(Coords2D(1080,1920), 30, 512, field_size=Coords2D(20,20),border=True,init_point=Coords2D(0,10))
+drawer=DragonCurve.DragonCurve(Coords2D(1080,1920), 60, 128, field_size=Coords2D(30,30),border=True,init_point=Coords2D(5,10))
 drawer.generate_video([Coords2D(1080,1920)])
-drawer.add_audio()
+drawer.alternative_add_audio()
