@@ -27,6 +27,7 @@ import GrowingBallDrawer
 import ShrinkingWallDrawer
 import CollidingSpawnDrawer
 import MarchingSquares
+import Limason
 
 height=1920
 width=800
@@ -66,6 +67,8 @@ for i in range(0,40):
 #drawer=MarchingSquares.MarchingSquares(Coords2D(1080,1920), 20, Coords2D(1000,1000),5,False,200,base_color=(0,100,0),line_color=(255,155,255))
 #drawer=GrowingBallDrawer.GrowingBallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),32,False,100)
 #drawer=Gosper.Gosper(Coords2D(1080,1920), 30, 512, field_size=Coords2D(20,20),border=True,init_point=Coords2D(0,10))
-drawer=DragonCurve.DragonCurve(Coords2D(1080,1920), 60, 128, field_size=Coords2D(30,30),border=True,init_point=Coords2D(5,10))
+#drawer=DragonCurve.DragonCurve(Coords2D(1080,1920), 60, 128, field_size=Coords2D(30,30),border=True,init_point=Coords2D(5,10))
+
+drawer=Limason.Limason(Coords2D(1080,1920), 60, 10, field_size=Coords2D(300,300),border=False, center = Coords2D(150,150), radius=50, point=Coords2D(150,150))
 drawer.generate_video([Coords2D(1080,1920)])
-drawer.alternative_add_audio()
+#drawer.alternative_add_audio()
