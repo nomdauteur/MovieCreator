@@ -28,6 +28,8 @@ import ShrinkingWallDrawer
 import CollidingSpawnDrawer
 import MarchingSquares
 import Limason
+import ExpoCircle
+import LongExpoCircle
 
 height=1920
 width=800
@@ -68,7 +70,12 @@ for i in range(0,40):
 #drawer=GrowingBallDrawer.GrowingBallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),32,False,100)
 #drawer=Gosper.Gosper(Coords2D(1080,1920), 30, 512, field_size=Coords2D(20,20),border=True,init_point=Coords2D(0,10))
 #drawer=DragonCurve.DragonCurve(Coords2D(1080,1920), 60, 128, field_size=Coords2D(30,30),border=True,init_point=Coords2D(5,10))
+#drawer=Limason.Limason(Coords2D(1080,1920), 60, 10, field_size=Coords2D(300,300),border=False, center = Coords2D(150,150), radius=50, point=Coords2D(150,150))
+#drawer=ExpoCircle.ExpoCircle(Coords2D(1080,1920), 60, 20, field_size=Coords2D(300,300),border=False, points_no = 300, power = p, iters = 300)
 
-drawer=Limason.Limason(Coords2D(1080,1920), 60, 10, field_size=Coords2D(300,300),border=False, center = Coords2D(150,150), radius=50, point=Coords2D(150,150))
-drawer.generate_video([Coords2D(1080,1920)])
+drawer=LongExpoCircle.LongExpoCircle(Coords2D(1920,1080), 60, 10, field_size=Coords2D(300,300),border=False, points_no = 300, min_power = 0.1, max_power = 2, delta_power = 0.002)
+drawer.generate_video([Coords2D(1920,1080)])
+
+#replace for vertical!!!!!
+#drawer.generate_video([Coords2D(1920,1080)])
 #drawer.alternative_add_audio()

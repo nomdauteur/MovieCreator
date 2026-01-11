@@ -107,7 +107,7 @@ class Drawer:
     def watermark(self,draw):
         if (self.offset.x>self.offset.y):
             x=self.offset.x+self.field.x*self.multiplier+2*self.border_width+2
-            y=self.offset.y+self.field.y*self.multiplier
+            y=self.offset.y+self.field.y*self.multiplier/2
         else:
             x=self.offset.x+self.field.x*self.multiplier/2
             y=self.offset.y+self.field.y*self.multiplier+2*self.border_width+2
