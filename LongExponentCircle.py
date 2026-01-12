@@ -8,20 +8,20 @@ from PIL import Image, ImageDraw, ImageFont
 from moviepy import VideoFileClip, AudioFileClip
 import music
 
-class LongExpoCircle(Drawer):
-    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, points_no=10, min_power = 0, max_power = 200, delta_power = 0.02):
+class LongExponentCircle(Drawer):
+    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, points_no=10, min_base = 0, max_base = 200, delta_base = 0.02):
         super().__init__(size, length, rate, field_size, border)
         self.iter_no=0
         self.points_no=points_no
-        self.curr_power = min_power
-        self.max_power=max_power
-        self.delta_power=delta_power
+        self.curr_base = min_base
+        self.max_base = max_base
+        self.delta_base = delta_base
 
         self.radius = self.field.x*0.45
         self.center=Coords2D(self.field.x*0.5,self.field.y*0.5)
 
 
-        self.file_name = "videos/ExpoCircle_Long" + str(self.max_power) + "_"
+        self.file_name = "videos/ExpoNentCircle_Long" + str(self.max_base) + "_"
 
     def point(self, i):
         impact = i / self.points_no
@@ -40,12 +40,13 @@ class LongExpoCircle(Drawer):
 
     def next_state(self):
         self.iter_no+=1
-        res =  {"iter_no":deepcopy(self.iter_no), "current_power":deepcopy(self.curr_power)}
-        self.curr_power += self.delta_power
+        res =  {"iter_no":deepcopy(self.iter_no), "current_base":deepcopy(self.curr_base)}
+        self.curr_base += self.delta_base
+        self.curr_base=round(self.curr_base,5)
         return res
 
     def get_all_states(self):
-        while (self.curr_power <= self.max_power):
+        while (self.curr_base <= self.max_base):
             self.states.append(deepcopy(self.next_state()))
 
     def compute_scale(self, size, field_size):
@@ -100,11 +101,12 @@ class LongExpoCircle(Drawer):
 
 
         draw.text((text_point.x, text_point.y),
-                  "power = "+str(round(state["current_power"],3)), font=font, fill="black")
+                  "base = "+str(round(state["current_base"],4)), font=font, fill="black")
 
         for i in range(self.points_no):
             start = self.offset_point(self.point(i%self.points_no))
-            end =  self.offset_point(self.point(int(math.pow(i,state["current_power"])) % self.points_no))
+            print("Base: {0}, power: {1}".format(state["current_base"],i))
+            end =  self.offset_point(self.point(math.pow(state["current_base"],i) % self.points_no))
             draw.line([start.x,start.y,end.x,end.y],fill="black",width=2)
 
         if (self.border):
@@ -123,7 +125,7 @@ class LongExpoCircle(Drawer):
         sonic_vector = []
         notes_quantity=88
         for s in self.states:
-            note_number = int(math.pow(s,self.power)) if self.power > 1 else s
+            note_number = int(math.pow(s,self.current_base)) if self.current_base > 1 else s
 
 
             sound = music.core.synths.note(freq=note_number,

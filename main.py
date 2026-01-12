@@ -29,7 +29,9 @@ import CollidingSpawnDrawer
 import MarchingSquares
 import Limason
 import ExpoCircle
+import ExponentCircle
 import LongExpoCircle
+import LongExponentCircle
 
 height=1920
 width=800
@@ -73,9 +75,12 @@ for i in range(0,40):
 #drawer=Limason.Limason(Coords2D(1080,1920), 60, 10, field_size=Coords2D(300,300),border=False, center = Coords2D(150,150), radius=50, point=Coords2D(150,150))
 #drawer=ExpoCircle.ExpoCircle(Coords2D(1080,1920), 60, 20, field_size=Coords2D(300,300),border=False, points_no = 300, power = p, iters = 300)
 
-drawer=LongExpoCircle.LongExpoCircle(Coords2D(1920,1080), 60, 10, field_size=Coords2D(300,300),border=False, points_no = 300, min_power = 0.1, max_power = 2, delta_power = 0.002)
-drawer.generate_video([Coords2D(1920,1080)])
+#drawer=LongExpoCircle.LongExpoCircle(Coords2D(1920,1080), 60, 10, field_size=Coords2D(300,300),border=False, points_no = 300, min_power = 0.1, max_power = 2, delta_power = 0.002)
+#drawer=LongExponentCircle.LongExponentCircle(Coords2D(1920,1080), 60, 10, field_size=Coords2D(300,300),border=False, points_no = 300, min_base = 0.85, max_base = 1.15, delta_base = 0.0002)
 
-#replace for vertical!!!!!
-#drawer.generate_video([Coords2D(1920,1080)])
-#drawer.alternative_add_audio()
+#this is for long #drawer.generate_video([Coords2D(1920,1080)])
+for p in [1.0164,1.0188,1.0208,1.023,1.0258]:
+    drawer=ExponentCircle.ExponentCircle(Coords2D(1080,1920), 60, 20, field_size=Coords2D(300,300),border=False, points_no = 300, base = p, iters = 300)
+    #replace for vertical!!!!!
+    drawer.generate_video([Coords2D(1080,1920)])
+    drawer.alternative_add_audio()
