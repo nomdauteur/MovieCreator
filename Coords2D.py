@@ -1,5 +1,6 @@
 import math
-
+from numbers import Number
+from typing import Self
 
 class Coords2D:
     epsilon=1
@@ -20,8 +21,23 @@ class Coords2D:
     def __sub__(self, other):
         return Coords2D(self.x - other.x, self.y - other.y)
 
-    def __mul__(self,coefficient): # by number
+    def __mul__(self,coefficient: Number) -> Self: # by number
         return Coords2D(self.x*coefficient, self.y*coefficient)
+
+    def complex_mul(self, coord: Self) -> Self: # complex
+        return Coords2D(self.x*coord.x - self.y*coord.y, self.y*coord.x + self.x*coord.y)
+
+    def complex_pow(self, power: int):
+        if power < 0:
+            return None
+        if power == 0:
+            return Coords2D(1,0)
+        res = self
+        for i in range(1,power):
+            res = res.complex_mul(self)
+        #print("power is {0}, start is {1}, finish is {2}".format(power, self,res))
+        return res
+
 
     def __truediv__(self,coefficient):
         return Coords2D(self.x/coefficient, self.y/coefficient)
@@ -99,6 +115,7 @@ class Coords2D:
         return Coords2D(10 ** 9, 10 ** 9)
 
     def length(self):
+        #print("{0},{1} gives length {2}".format(self.x,self.y,math.sqrt(self.x*self.x + self.y*self.y)))
         return math.sqrt(self.x*self.x + self.y*self.y)
 
     def angle(self,other):

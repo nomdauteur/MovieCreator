@@ -33,6 +33,9 @@ import ExponentCircle
 import LongExpoCircle
 import LongExponentCircle
 import Pendulums
+import Mandelbrot
+import Julia
+import JuliaLong
 
 height=1920
 width=800
@@ -86,6 +89,16 @@ for p in [1.0164,1.0188,1.0208,1.023,1.0258]:
     #replace for vertical!!!!!
     drawer.generate_video([Coords2D(1080,1920)])'''
     #drawer.alternative_add_audio()
+'''
+for degree in range(3,11):
+    drawer=Mandelbrot.Mandelbrot(Coords2D(1080,1920), 60, 5, field_size=Coords2D(400,400),border=False, degree=degree,start=Coords2D(0,0))
+    drawer.generate_video([Coords2D(1080,1920)])'''
 
-drawer=Pendulums.Pendulums(Coords2D(1080,1920), 60, 30, field_size=Coords2D(300,300),border=False, points_no=7,stick_lengths=[55,46,37,28,19,10], rules=[0,-6,5,-4,3,-2,1], accelerated=False)
-drawer.generate_video([Coords2D(1080,1920)])
+for c in [Coords2D(0.491,0.095), Coords2D(-0.494,0.078), Coords2D(0.56,0.215), Coords2D(0.6, 0.01), Coords2D(-0.567,0.195), Coords2D(0.528, 0.459), Coords2D(0.412, -0.686), Coords2D(-0.172,0.883), Coords2D(0.248,-1.276)]:
+    drawer=Julia.Julia(Coords2D(1080,1920), 60, 5, field_size=Coords2D(400,400),border=False, degree=3,c=c)
+    drawer.generate_video([Coords2D(1080,1920)])
+
+'''
+drawer=JuliaLong.JuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(500,500),border=False, degree=3)
+
+drawer.generate_video([Coords2D(1920,1080)])'''
