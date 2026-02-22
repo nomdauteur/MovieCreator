@@ -74,7 +74,7 @@ class JuliaLong(Drawer):
 
 
     def get_all_states(self):
-        for r in range(2,16):
+        for r in range(2,12):
             for phi in range(1,361, 10):
                 phi_rad = phi / 180 * math.pi
                 self.c = Coords2D(math.cos(phi_rad), math.sin(phi_rad)) * r / 10

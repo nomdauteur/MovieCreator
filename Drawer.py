@@ -9,6 +9,7 @@ from mingus.containers.bar import Bar
 from mingus.containers.track import Track
 import mingus.midi.midi_file_out as midi_file_out
 from moviepy import VideoFileClip, AudioFileClip
+from moviepy import ImageSequenceClip
 
 import random
 import cv2
@@ -134,6 +135,33 @@ class Drawer:
             cv2.destroyAllWindows()
             out.release()
 
+    def generate_video_2(self, sizes=None):
+        if sizes is None:
+            sizes = [self.size]
+
+        self.get_all_states()
+
+        for size in sizes:
+            output_file = self.file_name + str(size.x) + '_' + str(size.y) + '.mp4'
+
+            frames = []
+            for cadre in self.states:
+                img = self.draw_image(cadre, size)
+                frame_rgb = np.array(img)
+                frames.append(frame_rgb)
+
+            # Convert frames to a moviepy clip
+            clip = ImageSequenceClip(frames, fps=self.rate)
+
+            # Write the video file
+            clip.write_videofile(
+                output_file,
+                codec='libx264',
+                fps=self.rate,
+                logger=None
+            )
+
+
     def get_note_container(self,state):
         return None
 
@@ -181,6 +209,63 @@ class Drawer:
         final_clip.write_videofile(self.file_name+".mp4", codec="libx264", audio_codec="aac")
 
 
+    def generate_video_3(self, sizes=None):
+        if sizes is None:
+            sizes = [self.size]
+        self.get_all_states()
+        for size in sizes:
+            output_file = self.file_name + str(size.x) + '_' + str(size.y) + '.mp4'
 
+            # Try to find ffmpeg in common locations
+            import subprocess
+            import os
+            import shutil
 
+            # Check if ffmpeg is in PATH
+            ffmpeg_path = shutil.which('ffmpeg')
 
+            # If not in PATH, try common Windows installation paths
+            if ffmpeg_path is None:
+                common_paths = [
+                    r'C:\ffmpeg\bin\ffmpeg.exe',
+                    r'C:\Program Files\ffmpeg\bin\ffmpeg.exe',
+                    r'C:\Program Files (x86)\ffmpeg\bin\ffmpeg.exe',
+                    os.path.expanduser(r'~\ffmpeg\bin\ffmpeg.exe'),
+                    os.path.expanduser(r'~\Downloads\ffmpeg\bin\ffmpeg.exe'),
+                ]
+                for path in common_paths:
+                    if os.path.isfile(path):
+                        ffmpeg_path = path
+                        break
+
+            if ffmpeg_path is None:
+                raise RuntimeError(
+                    "ffmpeg not found. Please install ffmpeg and add it to PATH, or specify the full path to ffmpeg.exe")
+
+            # Build ffmpeg command with full path
+            cmd = [
+                ffmpeg_path,
+                '-y',
+                '-f', 'rawvideo',
+                '-vcodec', 'rawvideo',
+                '-s', f'{size.x}x{size.y}',
+                '-pix_fmt', 'rgb24',
+                '-r', str(self.rate),
+                '-i', '-',
+                '-c:v', 'libx264',
+                '-pix_fmt', 'yuv420p',
+                output_file
+            ]
+
+            # Start ffmpeg process
+            process = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+
+            # Write frames directly to ffmpeg
+            for cadre in self.states:
+                img = self.draw_image(cadre, size)
+                frame_bytes = img.tobytes()
+                process.stdin.write(frame_bytes)
+
+            # Close stdin and wait for process to complete
+            process.stdin.close()
+            process.wait()

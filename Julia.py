@@ -63,7 +63,7 @@ class Julia(Drawer):
     def get_all_states(self):
         self.states=[deepcopy(self.z_c)]
 
-        for i in range(40):
+        for i in range(30):
             self.states.append(deepcopy(self.next_state()))
 
     def draw_image(self, state, size=None):

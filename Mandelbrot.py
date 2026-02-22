@@ -65,7 +65,7 @@ class Mandelbrot(Drawer):
     def get_all_states(self):
         self.states=[deepcopy(self.z_c)]
 
-        for i in range(30):
+        for i in range(15):
             self.states.append(deepcopy(self.next_state()))
 
     def draw_image(self, state, size=None):

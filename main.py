@@ -36,6 +36,7 @@ import Pendulums
 import Mandelbrot
 import Julia
 import JuliaLong
+import LongGameOfLifeDrawer
 
 height=1920
 width=800
@@ -94,11 +95,16 @@ for degree in range(3,11):
     drawer=Mandelbrot.Mandelbrot(Coords2D(1080,1920), 60, 5, field_size=Coords2D(400,400),border=False, degree=degree,start=Coords2D(0,0))
     drawer.generate_video([Coords2D(1080,1920)])'''
 
-for c in [Coords2D(0.491,0.095), Coords2D(-0.494,0.078), Coords2D(0.56,0.215), Coords2D(0.6, 0.01), Coords2D(-0.567,0.195), Coords2D(0.528, 0.459), Coords2D(0.412, -0.686), Coords2D(-0.172,0.883), Coords2D(0.248,-1.276)]:
-    drawer=Julia.Julia(Coords2D(1080,1920), 60, 5, field_size=Coords2D(400,400),border=False, degree=3,c=c)
-    drawer.generate_video([Coords2D(1080,1920)])
+#drawer=Mandelbrot.Mandelbrot(Coords2D(1080,1920), 60, 5, field_size=Coords2D(400,400),border=False, degree=2,start=Coords2D(0,0))
+#drawer.generate_video_2([Coords2D(1080,1920)])
 
 '''
-drawer=JuliaLong.JuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(500,500),border=False, degree=3)
+drawer=JuliaLong.JuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(500,500),border=False, degree=7)
 
 drawer.generate_video([Coords2D(1920,1080)])'''
+
+drawer=LongGameOfLifeDrawer.LongGameOfLifeDrawer(Coords2D(1920,1080), 300, 20, field_size=Coords2D(100,100),border=True)
+
+drawer.generate_video_3([Coords2D(1920,1080)])
+drawer.alternative_add_audio()
+
