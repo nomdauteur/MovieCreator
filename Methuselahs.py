@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 import music
 from moviepy import VideoFileClip, AudioFileClip
 
-class LongGameOfLifeDrawer(Drawer):
+class Methuselahs(Drawer):
 
     @staticmethod
     def num_to_color(num):
@@ -18,18 +18,22 @@ class LongGameOfLifeDrawer(Drawer):
         #print("Color {0} to {1}".format(no,res))
         return res
 
-    def put_glider(self):
-        x = random.randint(0,self.field.x-3)
-        y = random.randint(0, self.field.y - 3)
+    def put_glider(self, point):
+        if (point is None):
+            point=Coords2D(self.field.x / 2, self.field.x / 2)
+        x = point.x
+        y = point.y
         self.initial_state[y][x]=1
         self.initial_state[y+2][x] = 1
         self.initial_state[y+1][x+1] = 1
         self.initial_state[y+2][x+1] = 1
         self.initial_state[y+1][x+2] = 1
 
-    def put_toad(self):
-        x = random.randint(1,self.field.x-5)
-        y = random.randint(1, self.field.y - 5)
+    def put_toad(self, point):
+        if (point is None):
+            point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = point.x
+        y = point.y
         self.initial_state[y][x]=1
         self.initial_state[y][x+1] = 1
         self.initial_state[y][x+2] = 1
@@ -37,18 +41,21 @@ class LongGameOfLifeDrawer(Drawer):
         self.initial_state[y+1][x] = 1
         self.initial_state[y + 1][x + 1] = 1
 
-    def put_line(self):
+    def put_line(self, point):
         dir = random.randint(0,1)
-        x = random.randint(0, self.field.x - 3)
-        y = random.randint(0, self.field.y - 3)
+        if (point is None):
+            point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = point.x
+        y = point.y
         self.initial_state[y][x] = 1
         self.initial_state[y+dir][x+(1-dir)] = 1
         self.initial_state[y+2*dir][x+2*(1-dir)] = 1
 
     def put_long_line(self):
         dir = random.randint(0,1)
-        x = random.randint(0, self.field.x - 4)
-        y = random.randint(0, self.field.y - 4)
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
         self.initial_state[y][x] = 1
         self.initial_state[y+dir][x+(1-dir)] = 1
         self.initial_state[y+2*dir][x+2*(1-dir)] = 1
@@ -56,24 +63,28 @@ class LongGameOfLifeDrawer(Drawer):
 
     def put_tetris(self):
         dir = random.randint(0,1)
-        x = random.randint(1, self.field.x - 3)
-        y = random.randint(1, self.field.y - 3)
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
         self.initial_state[y][x] = 1
         self.initial_state[y][x+1] = 1
         self.initial_state[y][x+2] = 1
         self.initial_state[y -1][x + 1] = 1
 
-    def put_block(self):
-        x = random.randint(0, self.field.x - 2)
-        y = random.randint(0, self.field.y - 2)
+    def put_block(self, point):
+        if (point is None):
+            point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = point.x
+        y = point.y
         self.initial_state[y][x] = 1
         self.initial_state[y][x+1] = 1
         self.initial_state[y+1][x] = 1
         self.initial_state[y+1][x+1] = 1
 
     def put_r_pentamino(self):
-        x = random.randint(0, self.field.x - 4)
-        y = random.randint(0, self.field.y - 4)
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
         self.initial_state[y][x+1] = 1
         self.initial_state[y][x+2] = 1
         self.initial_state[y+1][x] = 1
@@ -81,8 +92,9 @@ class LongGameOfLifeDrawer(Drawer):
         self.initial_state[y + 2][x + 1] = 1
 
     def put_rabbit(self):
-        x = random.randint(0, self.field.x - 8)
-        y = random.randint(0, self.field.y - 4)
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
         self.initial_state[y][x] = 1
         self.initial_state[y][x+4] = 1
         self.initial_state[y][x + 5] = 1
@@ -94,8 +106,9 @@ class LongGameOfLifeDrawer(Drawer):
         self.initial_state[y + 2][x + 1] = 1
 
     def put_acorn(self):
-        x = random.randint(0, self.field.x - 8)
-        y = random.randint(0, self.field.y - 4)
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
 
         self.initial_state[y][x+1] = 1
         self.initial_state[y+1][x+3] = 1
@@ -106,8 +119,9 @@ class LongGameOfLifeDrawer(Drawer):
         self.initial_state[y+2][x+6] = 1
 
     def block_plus_line(self):
-        x = random.randint(0, self.field.x - 10)
-        y = random.randint(0, self.field.y - 10)
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
 
         self.initial_state[y][x] = 1
         self.initial_state[y][x + 1] = 1
@@ -118,41 +132,68 @@ class LongGameOfLifeDrawer(Drawer):
         self.initial_state[y + 1][x + 4] = 1
         self.initial_state[y + 1][x + 5] = 1
 
+    def herschel(self):
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)
+        y = math.floor(point.y)
+
+        self.initial_state[y][x] = 1
+        self.initial_state[y+1][x] = 1
+        self.initial_state[y + 1][x+1] = 1
+        self.initial_state[y + 1][x + 2] = 1
+
+        self.initial_state[y+2][x] = 1
+        self.initial_state[y + 2][x + 2] = 1
+        self.initial_state[y + 3][x + 2] = 1
+
+    def onedglidergen(self):
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)-7
+        y = math.floor(point.y)
+
+        self.initial_state[y][x] = 1
+        self.initial_state[y][x+1] = 1
+        self.initial_state[y][x+2] = 1
+        self.initial_state[y][x + 3] = 1
+        self.initial_state[y][x + 6] = 1
+        self.initial_state[y][x + 7] = 1
+        self.initial_state[y][x + 8] = 1
+        self.initial_state[y][x + 10] = 1
+        self.initial_state[y][x + 11] = 1
+        self.initial_state[y][x + 12] = 1
+        self.initial_state[y][x + 13] = 1
+        self.initial_state[y][x + 14] = 1
+
+    def onedten(self):
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)-7
+        y = math.floor(point.y)
+
+        self.initial_state[y][x] = 1
+        self.initial_state[y][x+1] = 1
+        self.initial_state[y][x+2] = 1
+        self.initial_state[y][x + 3] = 1
+        self.initial_state[y][x + 4] = 1
+        self.initial_state[y][x + 5] = 1
+        self.initial_state[y][x + 6] = 1
+        self.initial_state[y][x + 7] = 1
+        self.initial_state[y][x + 8] = 1
+        self.initial_state[y][x + 9] = 1
 
 
 
-    def init_random(self):
-        no = math.floor(self.field.x/3)
-        for i in range(random.randint(0,no)):
-            self.put_glider()
-        for i in range(random.randint(0,no)):
-            self.put_line()
-        for i in range(random.randint(0,no)):
-            self.put_toad()
-        for i in range(random.randint(0,no)):
-            self.put_block()
-        for i in range(random.randint(0,no)):
-            self.block_plus_line()
-        for i in range(random.randint(0, no)):
-            self.put_long_line()
-        for i in range(random.randint(0, no)):
-            self.put_tetris()
-        for i in range(random.randint(0,no)):
-            self.put_acorn()
-        for i in range(random.randint(0, no)):
-            self.put_r_pentamino()
-        for i in range(random.randint(0, no)):
-            self.put_rabbit()
+    def init(self):
+        self.onedten()
 
-    def __init__(self, size=Coords2D(1920, 1080), length=60, rate=1, field_size=Coords2D(500, 500), border=False, births=[3], stables=[2,3], initial_state=None):
+    def __init__(self, size=Coords2D(1080, 1920), length=60, rate=30, field_size=Coords2D(100, 100), border=False, births=[3], stables=[2,3], initial_state=None):
         super().__init__(size, length, rate, field_size,border)
         self.draw_time = 0
         self.births=births
         self.stables=stables
         self.initial_state = [[0 for _ in range(self.field.x)] for _ in range(self.field.y)]
-        self.init_random()
 
-        #self.initial_state = deepcopy(initial_state)
+        self.init()
+
         self.current_state=deepcopy(self.initial_state)
 
     def count_neighbors(self, i, j, state):

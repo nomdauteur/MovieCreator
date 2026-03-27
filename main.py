@@ -37,6 +37,7 @@ import Mandelbrot
 import Julia
 import JuliaLong
 import LongGameOfLifeDrawer
+import Methuselahs
 
 height=1920
 width=800
@@ -103,8 +104,9 @@ drawer=JuliaLong.JuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(500,5
 
 drawer.generate_video([Coords2D(1920,1080)])'''
 
-drawer=LongGameOfLifeDrawer.LongGameOfLifeDrawer(Coords2D(1920,1080), 300, 20, field_size=Coords2D(100,100),border=True)
+#drawer=LongGameOfLifeDrawer.LongGameOfLifeDrawer(Coords2D(1920,1080), 1800, 15, field_size=Coords2D(100,100),border=True)
+drawer=Methuselahs.Methuselahs(Coords2D(1080,1920), 10, 10, field_size=Coords2D(50,50),border=True)
 
-drawer.generate_video_3([Coords2D(1920,1080)])
-drawer.alternative_add_audio()
+drawer.generate_video_3([Coords2D(1080,1920)])
+#drawer.alternative_add_audio()
 
