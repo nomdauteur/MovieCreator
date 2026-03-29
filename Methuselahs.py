@@ -181,9 +181,31 @@ class Methuselahs(Drawer):
         self.initial_state[y][x + 9] = 1
 
 
+    def one56(self):
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)-28
+        y = math.floor(point.y)
+        for i in range(56):
+            self.initial_state[y][x+i] = 1
+
+    def twotetris(self):
+        point = Coords2D(self.field.x / 2, self.field.x / 2)
+        x = math.floor(point.x)-5
+        y = math.floor(point.y)
+        self.initial_state[y][x+1] = 1
+        self.initial_state[y+1][x] = 1
+        self.initial_state[y+1][x + 1] = 1
+        self.initial_state[y+1][x+2] = 1
+
+        self.initial_state[y][x + 7] = 1
+        self.initial_state[y + 1][x+6] = 1
+        self.initial_state[y + 1][x + 7] = 1
+        self.initial_state[y + 1][x + 8] = 1
+
+
 
     def init(self):
-        self.onedten()
+        self.twotetris()
 
     def __init__(self, size=Coords2D(1080, 1920), length=60, rate=30, field_size=Coords2D(100, 100), border=False, births=[3], stables=[2,3], initial_state=None):
         super().__init__(size, length, rate, field_size,border)
