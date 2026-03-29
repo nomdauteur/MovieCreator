@@ -40,6 +40,7 @@ import LongGameOfLifeDrawer
 import Methuselahs
 import BurningShip
 import BurningJuliaLong
+import BurningJulia
 
 height=1920
 width=800
@@ -104,14 +105,16 @@ for degree in range(3,11):
 
 #drawer=JuliaLong.JuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(500,500),border=False, degree=7)
 
+'''
 drawer=BurningJuliaLong.BurningJuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(400,400),border=False, degree=2)
 drawer.generate_video_3([Coords2D(1920,1080)])
+'''
 
 #drawer=LongGameOfLifeDrawer.LongGameOfLifeDrawer(Coords2D(1920,1080), 1800, 15, field_size=Coords2D(100,100),border=True)
 #drawer=Methuselahs.Methuselahs(Coords2D(1080,1920), 6, 10, field_size=Coords2D(30,30),border=True)
-'''for i in range(3,11):
-    drawer=BurningShip.BurningShip(Coords2D(1080,1920), 60, 5, field_size=Coords2D(600,600),border=False, degree=i,start=Coords2D(0,0))
+for i in [Coords2D(0.294,0.057),Coords2D(0.3,0.005),Coords2D(-0.005,0.3),Coords2D(-0.108,0.28),Coords2D(-0.233,0.189),Coords2D(0.262,-0.145),Coords2D(0.393,0.076),Coords2D(0.063,0.395),Coords2D(-0.007,0.4),Coords2D(-0.262,0.302),Coords2D(-0.35,0.194),Coords2D(0.35,-0.194),Coords2D(0.378,-0.13),Coords2D(0.467,0.179),Coords2D(0.429,0.258),Coords2D(0.315,0.389),Coords2D(0.163,0.473),Coords2D(-0.291,-0.525),Coords2D(-0.094,-0.593),Coords2D(0.01,-0.6),Coords2D(0.215,-0.56),Coords2D(0.394,-0.453)]:
+    drawer=BurningJulia.BurningJulia(Coords2D(1080,1920), 60, 5, field_size=Coords2D(400,400),border=False, degree=2, c=i)
 
-    drawer.generate_video_3([Coords2D(1080,1920)])'''
+    drawer.generate_video_3([Coords2D(1080,1920)])
 #drawer.alternative_add_audio()
 

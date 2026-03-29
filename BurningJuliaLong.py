@@ -113,6 +113,8 @@ class BurningJuliaLong(Drawer):
 
         self.watermark(draw)
 
+        img.save("videos/"+"BurningJuliaLong_"+str(state["c"].x)+"_"+str(state["c"].y)+".jpg")
+
         return img
 
 

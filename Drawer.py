@@ -58,7 +58,7 @@ class Drawer:
         return self.current_state
 
     def get_all_states(self):
-        self.states = [deepcopy(self.current_state),deepcopy(self.current_state)]
+        self.states = [deepcopy(self.current_state)]
         for cadre in range(0, self.length*self.rate):
             self.states.append(deepcopy(self.next_state()))
 
