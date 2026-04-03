@@ -66,7 +66,7 @@ class BurningJulia(Drawer):
     def get_all_states(self):
         self.states=[deepcopy(self.z_c)]
 
-        for i in range(30):
+        for i in range(20):
             self.states.append(deepcopy(self.next_state()))
 
     def draw_image(self, state, size=None):
@@ -87,6 +87,7 @@ class BurningJulia(Drawer):
                     if state[i][j].length() < 8 else 5 if state[i][j].length()<16 else 6 \
                     if state[i][j].length() < 32 else 7 if state[i][j].length()<64 else 8 \
                     if state[i][j].length() < 128 else 9
+
                 #print("Value is {0}, color is {1}".format(state[i][j],self.fill(color)))
                 draw.rectangle((begin.x,begin.y,end.x,end.y),fill=self.fill(color))
 
