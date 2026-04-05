@@ -7,16 +7,16 @@ from Wall import Wall, distance_squared
 
 class Ball:
 
-    epsilon=10
+    epsilon=1
 
-    def __init__(self,radius=5, spawn_point=Coords2D(0,0), acceleration=0, color=None):
+    def __init__(self,radius=5, spawn_point=Coords2D(0,0), acceleration=0, speed=0, color=None):
         if color is None:
             color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
         self.radius = radius
         self.spawn_point = spawn_point
         self.current_point=self.spawn_point
         self.color=color
-        self.speed=Coords2D(random.randint(200,300),random.randint(200,300))
+        self.speed=speed
         self.acceleration=Coords2D(0,acceleration)
 
     def add_force(self, force=Coords2D(0,0)):
@@ -28,7 +28,7 @@ class Ball:
     def change_color(self,delta):
         self.color=((self.color[0]+delta[0])%255,(self.color[1]+delta[1])%255,(self.color[2]+delta[2])%255)
 
-    def step(self,time_unit,walls):
+    def step(self,time_unit,walls, should_change_color=True):
         should=False
         bounceable_wall=None
         walls_count=0
@@ -42,10 +42,12 @@ class Ball:
         self.speed=self.speed+self.acceleration*time_unit
         if walls_count>1:
             self.reflect()
-            self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
+            if should_change_color:
+                self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
         elif (bounceable_wall is not None):
             self.bounce(bounceable_wall)
-            self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
+            if should_change_color:
+                self.change_color((255-2*self.color[0]+random.randint(-10,10),255-2*self.color[1]+random.randint(-10,10),255-2*self.color[2]+random.randint(-10,10)))
         self.unhole(walls)
 
         if should:

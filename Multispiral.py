@@ -4,6 +4,7 @@ from copy import deepcopy
 from Drawer import Drawer
 from Coords2D import Coords2D
 from PIL import Image, ImageDraw, ImageFont
+import random
 
 
 class Spiral():
@@ -13,10 +14,10 @@ class Spiral():
         self.parent_id = parent_id
         self.born_time = born_time
     def get_age(self,curr_time):
-        return curr_time-self.born_time
+        return curr_time-self.born_time+0.001
     def get_offset(self, curr_time): # center moves, so offset from it
         age = self.get_age(curr_time)
-        r = self.b * age
+        r = self.b * (age)
         phi = age * self.speed / 180 * math.pi
         return Coords2D(math.cos(phi), math.sin(phi)) * r
 
@@ -26,8 +27,8 @@ class Multispiral(Drawer):
         super().__init__(size, length, rate, field_size, border)
 
         self.time=0
-        self.init_speed = 72/self.rate
-        self.init_b = self.field.x / 2 / self.length / self.rate / 1.1
+        self.init_speed = 36/self.rate
+        self.init_b = self.field.x / 2 / self.length / self.rate / 2
 
         self.center = Coords2D(self.field.x/2,self.field.y/2)
 
@@ -52,7 +53,13 @@ class Multispiral(Drawer):
         self.time+=1
 
         if (self.time ==10):
-            self.spirals.append(Spiral(self.init_b/6, self.init_speed*1.9, 0, self.time))
+            self.spirals.append(Spiral(self.init_b/random.uniform(1.5,3), self.init_speed*random.uniform(0.5,2.5), 0, self.time))
+        if (self.time ==20):
+            self.spirals.append(Spiral(self.init_b/random.uniform(3,7), self.init_speed*random.uniform(0.25,6), 1, self.time))
+        if (self.time ==60):
+            self.spirals.append(Spiral(self.init_b/random.uniform(7,10), self.init_speed*random.uniform(0.125,10), 2, self.time))
+        if (self.time ==80):
+            self.spirals.append(Spiral(self.init_b/random.uniform(10,15), self.init_speed*random.uniform(0.0001,20), 3, self.time))
 
         #return {"time":deepcopy(self.time), "points":deepcopy([self.get_current_point(id) for id in range (len(self.spirals))])}
         return {"time": deepcopy(self.time)}
@@ -65,14 +72,15 @@ class Multispiral(Drawer):
         for i in range(self.length*self.rate):
             self.states.append(deepcopy(self.next_state()))
 
+        self.clr=[(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for i in range(len(self.spirals))]
+
+
 
     def draw_image(self, state, size=None):
         if size is None:
             size = Coords2D(self.size.x, self.size.y)
         img = Image.new("RGB", (size.x, size.y), (255, 255, 255))
         draw = ImageDraw.Draw(img)
-
-        colors = ["red","green","blue"]
 
         self.compute_scale(size)
         #print(state)
@@ -82,7 +90,7 @@ class Multispiral(Drawer):
                     continue
                 begin = self.offset_point(self.get_current_point(s,i,state["time"]))
                 end = self.offset_point(self.get_current_point(s,i+1,state["time"]))
-                draw.line((begin.x,begin.y,end.x,end.y), fill=colors[s%3], width=math.floor(5/(s+1)))
+                draw.line((begin.x,begin.y,end.x,end.y), fill=self.clr[s], width=math.floor(10/(s+1)))
             #curr = self.offset_point(state["points"][-1])
             #draw.circle((curr.x,curr.y),radius=5, fill="red")
 

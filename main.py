@@ -42,6 +42,7 @@ import BurningShip
 import BurningJuliaLong
 import BurningJulia
 import Multispiral
+import Voronoi
 
 height=1920
 width=800
@@ -113,7 +114,9 @@ for degree in range(3,11):
 
 #drawer=LongGameOfLifeDrawer.LongGameOfLifeDrawer(Coords2D(1920,1080), 1800, 15, field_size=Coords2D(100,100),border=True)
 #drawer=Methuselahs.Methuselahs(Coords2D(1080,1920), 6, 10, field_size=Coords2D(30,30),border=True)
-drawer=Multispiral.Multispiral(Coords2D(1080,1920), 30, 6, field_size=Coords2D(400,400),border=True)
+#drawer=Multispiral.Multispiral(Coords2D(1080,1920), 30, 6, field_size=Coords2D(400,400),border=False)
+
+drawer=Voronoi.Voronoi(Coords2D(1080,1920), 20, Coords2D(300,300),20,True,500)
 
 drawer.generate_video_3([Coords2D(1080,1920)])
 #drawer.alternative_add_audio()
