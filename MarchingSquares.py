@@ -23,16 +23,27 @@ class MarchingSquares(Drawer):
         self.numbers = [[0 for _ in range(self.side+1)] for _ in range(self.side+1)]
         self.indices = [[0 for _ in range(self.side)] for _ in range(self.side)]
 
-        self.threshold = side*0.8
-        self.small_grid=[[random.randint(-side,side) for j in range(math.ceil(self.side)+1)] for i in range(math.ceil(self.side)+1)]
-        self.numbers = [[self.small_grid[math.floor(i/random.randint(1,5))][math.floor(j/random.randint(1,5))]+random.randint(-10,10) for j in range(self.side+1)] for i in range(self.side+1)]
-        self.delta = 5
+        self.threshold = side*0.4
+        #self.small_grid=[[random.randint(-side,side) for j in range(math.ceil(self.side)+1)] for i in range(math.ceil(self.side)+1)]
+        self.small_grid=[[0,100,0,100,100,100,0,100,100,100,0],
+            [100,100,0,100,0,100,0,100,0,100,0],
+            [100,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,0,100,0,100,0,100,0],
+            [0,100,0,100,100,100,0,100,100,100,0],
+            [0,0,0,0,0,0,0,0,0,0,0]]
+        self.numbers = [[100*(1-((-1)**(i+j))) if (i==0 or j==0 or i==self.side or j==self.side) else (1-((-1)**(i+j)))*self.small_grid[math.floor(i/15)][math.floor(j/15)] for j in range(self.side+1)] for i in range(self.side+1)]
+        self.delta = 40
         print("Threshold: {0}".format(self.threshold))
         print(self.numbers)
 
     def get_all_states(self):
         for cadre in range(0, self.length*self.rate):
-            #print("Forming {0}th state".format(cadre))
+            print("Forming {0}th state".format(cadre))
             self.states.append(deepcopy(self.next_state()))
 
     def count_indices(self):
@@ -47,7 +58,7 @@ class MarchingSquares(Drawer):
         #print("Indices are: {0}".format(self.indices))
 
         state = [[self.lookup(i,j) for j in range(self.side)] for i in range(self.side)]
-        self.numbers=[[a+random.uniform(self.delta/2,self.delta) for a in b] for b in self.numbers]
+        self.numbers=[[a+random.uniform(-self.delta,self.delta) for a in b] for b in self.numbers]
         return state
 
 

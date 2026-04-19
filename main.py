@@ -43,6 +43,7 @@ import BurningJuliaLong
 import BurningJulia
 import Multispiral
 import Voronoi
+import MultiGameOfLife
 
 height=1920
 width=800
@@ -79,7 +80,7 @@ for i in range(0,40):
 
 #drawer=ShrinkingWallDrawer.ShrinkingWallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),20,False,100)
 #drawer=CollidingSpawnDrawer.CollidingSpawnDrawer(Coords2D(1080,1920), 30, Coords2D(500,500),20,False,100)
-#drawer=MarchingSquares.MarchingSquares(Coords2D(1080,1920), 20, Coords2D(1000,1000),5,False,200,base_color=(0,100,0),line_color=(255,155,255))
+
 #drawer=GrowingBallDrawer.GrowingBallDrawer(Coords2D(1080,1920), 60, Coords2D(500,500),32,False,100)
 #drawer=Gosper.Gosper(Coords2D(1080,1920), 30, 512, field_size=Coords2D(20,20),border=True,init_point=Coords2D(0,10))
 #drawer=DragonCurve.DragonCurve(Coords2D(1080,1920), 60, 128, field_size=Coords2D(30,30),border=True,init_point=Coords2D(5,10))
@@ -116,8 +117,15 @@ for degree in range(3,11):
 #drawer=Methuselahs.Methuselahs(Coords2D(1080,1920), 6, 10, field_size=Coords2D(30,30),border=True)
 #drawer=Multispiral.Multispiral(Coords2D(1080,1920), 30, 6, field_size=Coords2D(400,400),border=False)
 
-drawer=Voronoi.Voronoi(Coords2D(1080,1920), 20, Coords2D(300,300),20,True,500)
+#drawer=MarchingSquares.MarchingSquares(Coords2D(1920,1080), 120, Coords2D(1000,1000),5,False,150,base_color=(0,100,0),line_color=(255,155,255))
+#drawer=Voronoi.Voronoi(Coords2D(1080,1920), 20, Coords2D(300,300),20,True,500)
 
-drawer.generate_video_3([Coords2D(1080,1920)])
+#coagulation: {"births":[3,7,8],"stable":[2,3,5,6,7,8]}
+#maze: {"births":[3],"stable":[1,2,3,4,5]}
+
+drawer = MultiGameOfLife.MultiGameOfLife(size=(1920,1080),rate=30,field_size=Coords2D(200,200),
+                                         border=True, agents=[{"births":[3],"stable":[1,2,3,4,5]},{"births":[3],"stable":[1,2,3,4,5]}])
+
+drawer.generate_video_3([Coords2D(1920,1080)])
 #drawer.alternative_add_audio()
 
