@@ -44,6 +44,8 @@ import BurningJulia
 import Multispiral
 import Voronoi
 import MultiGameOfLife
+import ExperimentJuliaLong
+import ExperimentMandelbrot
 
 height=1920
 width=800
@@ -122,10 +124,21 @@ for degree in range(3,11):
 
 #coagulation: {"births":[3,7,8],"stable":[2,3,5,6,7,8]}
 #maze: {"births":[3],"stable":[1,2,3,4,5]}
+#stains B3678/S235678
+#cities B45678/S2345
+#variations=[{"births":[4,5,6,7,8],"stable":[2,3,4,5]},{"births":[4,5,6,7,8],"stable":[2,3,4,5]},{"births":[4,5,6,7,8],"stable":[2,3,4,5]},{"births":[3,6,7,8],"stable":[2,3,5,6,7,8]},{"births":[3,7,8],"stable":[2,3,5,6,7,8]},{"births":[3],"stable":[1,2,3,4,5]}]
+#drawer = MultiGameOfLife.MultiGameOfLife(size=Coords2D(1080,1920),rate=150,field_size=Coords2D(200,200), border=True, agents=[{"births":[3],"stable":[1,2,3,4,5]} for _ in range(random.randint(5,10))])
+#points = 11
+'''drawer = Pendulums.Pendulums(size=Coords2D(1080,1920),rate=30,field_size=Coords2D(700,700),
+                                         border=True,
+                             stick_lengths = [random.randint(1,5)*(110/points) for i in range(points-1)],
+                             rules=[0 if j==0 else random.randint(1,5) for j in range(points)])'''
 
-drawer = MultiGameOfLife.MultiGameOfLife(size=(1920,1080),rate=30,field_size=Coords2D(200,200),
-                                         border=True, agents=[{"births":[3],"stable":[1,2,3,4,5]},{"births":[3],"stable":[1,2,3,4,5]}])
-
+drawer=ExperimentJuliaLong.ExperimentJuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(400,400),border=False, degree=2)
 drawer.generate_video_3([Coords2D(1920,1080)])
+'''for i in range(4,11):
+    drawer=ExperimentMandelbrot.ExperimentMandelbrot(Coords2D(1080,1920), 60, 6, field_size=Coords2D(400,400),border=False, degree=i)
+    drawer.generate_video_3([Coords2D(1080,1920)])'''
+
 #drawer.alternative_add_audio()
 

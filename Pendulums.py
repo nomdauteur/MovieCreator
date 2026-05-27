@@ -8,42 +8,30 @@ from PIL import Image, ImageDraw, ImageFont
 from moviepy import VideoFileClip, AudioFileClip
 import music
 
+import random
+
 class Pendulums(Drawer):
-    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False,points_no=3, stick_lengths = [10,20],rules=[0,1,2], accelerated = False):
+    def __init__(self, size=Coords2D(1920, 800), length=60, rate=1, field_size=Coords2D(100, 100), border=False, stick_lengths = [10,20],rules=[0,1,2], accelerated = False):
         # rules will be mapped to functions. E. g. 0 not moving, 1 circle etc.
         super().__init__(size, length, rate, field_size, border)
-        self.points_no=points_no
+        self.points_no=len(rules)
         self.stick_lengths=stick_lengths
         self.rules=rules
         self.initial_point = Coords2D(self.field.x/2,self.field.y/2)
-        self.phis=[0 for i in range(0,self.points_no)] # will play with that too; 0 should be downward
+        self.phis=[0 if i==0 else 2*math.pi/360 * random.randint(0,360) for i in range(0,self.points_no)] # will play with that too; 0 should be downward
         self.delta_phi = 2*math.pi/360
         self.init_positions=[]
         self.init_positions.append(self.initial_point)
-        for i in range(1,self.points_no):
-            self.init_positions.append(self.init_positions[i-1]+Coords2D(math.cos(self.phis[i] - math.pi/2),math.sin(self.phis[i] - math.pi/2))*self.stick_lengths[i-1])
-        self.lines = [[(self.init_positions[i],self.init_positions[i+1])] for i in range(0,self.points_no-1)]
+        #for i in range(1,self.points_no):
+        #    self.init_positions.append(self.init_positions[i-1]+Coords2D(math.cos(self.phis[i] - math.pi/2),math.sin(self.phis[i] - math.pi/2))*self.stick_lengths[i-1])
+        #self.lines = [[(self.init_positions[i],self.init_positions[i+1])] for i in range(0,self.points_no-1)]
+        self.lines = [[] for i in range(0,self.points_no-1)]
         self.accelerated = accelerated
+        self.colors=['red','green','blue','yellow','purple','pink','gray','black','magenta','cyan','orange','darkkhaki']
+        random.shuffle(self.colors)
 
     def fill(self,number):
-        modulo=number%8
-        match modulo:
-            case 0:
-                return 'red'
-            case 1:
-                return 'green'
-            case 2:
-                return 'blue'
-            case 3:
-                return 'yellow'
-            case 4:
-                return 'purple'
-            case 5:
-                return 'pink'
-            case 6:
-                return 'gray'
-            case 7:
-                return 'black'
+        return self.colors[number%len(self.colors)]
 
 
     def map_to_function(self,point_no, parameter):
@@ -75,9 +63,11 @@ class Pendulums(Drawer):
 
 
     def get_all_states(self):
-        self.states=[self.points_no-1]
+        #self.states=[self.points_no-1]
 
-        for i in range(360):
+        speeds = [math.floor(360/self.rules[k]) for k in range(1, len(self.rules))]
+
+        for i in range(math.lcm(*speeds)):
             self.states.append(deepcopy(self.next_state()))
 
     def draw_image(self, state, size=None):
@@ -92,7 +82,7 @@ class Pendulums(Drawer):
             for j in range(self.points_no-1):
                 start = self.offset_point(self.lines[j][i][0])
                 end =  self.offset_point(self.lines[j][i][1])
-                draw.line([start.x,start.y,end.x,end.y],fill=self.fill(j),width=2)
+                draw.line([start.x,start.y,end.x,end.y],fill=self.fill(j),width=3)
                 draw.circle((start.x,start.y),self.multiplier,fill="white",outline="black",width=1)
                 draw.circle((end.x, end.y),self.multiplier, fill="white", outline="black", width=1)
 
