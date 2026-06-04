@@ -46,6 +46,7 @@ import Voronoi
 import MultiGameOfLife
 import ExperimentJuliaLong
 import ExperimentMandelbrot
+import ExperimentJulia
 
 height=1920
 width=800
@@ -134,11 +135,14 @@ for degree in range(3,11):
                              stick_lengths = [random.randint(1,5)*(110/points) for i in range(points-1)],
                              rules=[0 if j==0 else random.randint(1,5) for j in range(points)])'''
 
-drawer=ExperimentJuliaLong.ExperimentJuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(400,400),border=False, degree=2)
-drawer.generate_video_3([Coords2D(1920,1080)])
-'''for i in range(4,11):
-    drawer=ExperimentMandelbrot.ExperimentMandelbrot(Coords2D(1080,1920), 60, 6, field_size=Coords2D(400,400),border=False, degree=i)
-    drawer.generate_video_3([Coords2D(1080,1920)])'''
+#drawer=ExperimentJuliaLong.ExperimentJuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(400,400),border=False, degree=5)
+#drawer.generate_video_3([Coords2D(1920,1080)])
+for i in (Coords2D(-0.25085756468171017,0.6535062985480412),Coords2D(-0.35836794954530027,0.9335804264972017),Coords2D(-0.3878476961970701,-0.6996957657115164),Coords2D(-0.48480962024633756,-0.8746197071393954),Coords2D(-0.5332905822709714,-0.9620816778533351),Coords2D(-0.5663883519448534,-0.699431365311274),Coords2D(-0.6560590289905072,0.7547095802227721),Coords2D(-0.6857338405616898,-0.4120304599280433),Coords2D(-0.6922524301548207,-0.8548605576026682),Coords2D(-0.6994313653112738,0.5663883519448537),Coords2D(-0.7216649318895578,0.8301805382450492),Coords2D(-0.7564148604794535,0.2604545235657253),Coords2D(-0.8301805382450491,-0.7216649318895582),Coords2D(-0.8889195065356239,0.14079101853620787),Coords2D(-0.9876883405951377,0.15643446504023098),Coords2D(-0.9998476951563913,-0.017452406437283192),Coords2D(-1.0998324646720303,-0.01919764708101151),Coords2D(0.10950412552816165,0.6913818384165964),Coords2D(0.2604545235657254,0.7564148604794534),Coords2D(0.3878476961970697,0.6996957657115166),Coords2D(0.4120304599280433,-0.6857338405616898),Coords2D(0.5889763100685984,0.11448539722592688)):
+    drawer=ExperimentJulia.ExperimentJulia(Coords2D(1080,1920), 60, 3, field_size=Coords2D(400,400),border=False, degree=5,c=i)
+    drawer.generate_video_3([Coords2D(1080,1920)])
+
+#drawer=ExperimentMandelbrot.ExperimentMandelbrot(Coords2D(1080,1920), 60, 3, field_size=Coords2D(400,400),border=False, degree=6)
+#drawer.generate_video_3([Coords2D(1080,1920)])
 
 #drawer.alternative_add_audio()
 

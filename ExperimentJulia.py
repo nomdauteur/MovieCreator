@@ -13,7 +13,7 @@ class ExperimentJulia(Drawer):
         self.degree = degree
         self.c = c
         self.z_c = [[self.coords_to_z(Coords2D(j,i)) for j in range(self.field.x)] for i in range(self.field.y)]
-        self.file_name = "videos/"+"CelticJulia_"+str(self.c.x)+"_"+str(self.c.y)+"_"+str(self.degree)+"_"
+        self.file_name = "videos/"+"CeltJulia_"+str(self.c.x)+"_"+str(self.c.y)+"_"+str(self.degree)+"_"
 
     def z_to_coords(self, z):
         return (z + Coords2D(self.field.x/2, self.field.y/2)) * self.field.x/4
@@ -26,8 +26,12 @@ class ExperimentJulia(Drawer):
             return Coords2D(2**8,z_c.y)
         if (abs(z_c.y) > 2**8): # if it's big, it's big
             return Coords2D(z_c.x,2**8)
-        to_pow = Coords2D(abs(z_c.x), z_c.y)
-        return to_pow.complex_pow(self.degree)+self.c
+        #to_pow = Coords2D(z_c.y, z_c.x)
+        #return to_pow.complex_pow(self.degree)+self.c
+        #return z_c.complex_pow(self.degree) * math.cos(z_c.length() * 4 * math.pi) + self.c
+        #return z_c.complex_pow(self.degree) * math.sin(z_c.x * 4 * math.pi) * math.cos(z_c.y * 4 * math.pi) + self.c
+        pow = z_c.complex_pow(self.degree)
+        return Coords2D(abs(pow.x), pow.y) + self.c
 
     def fill(self,number):
         match number:

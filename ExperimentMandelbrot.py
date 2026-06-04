@@ -13,21 +13,27 @@ class ExperimentMandelbrot(Drawer):
         self.degree = degree
         self.start = start
         self.z_c = [[self.start for _ in range(self.field.x)] for _ in range(self.field.y)]
-        self.file_name="videos/CeltMandelbrot_"+str(self.degree)+"_"
+        self.file_name="videos/CosMandelbrot_"+str(self.degree)+"_"
 
     def c_to_coords(self, c):
-        return (c + Coords2D(self.field.x/1.5, self.field.y/2)) * 100
+        return (c + Coords2D(self.field.x/1.9, self.field.y/2.2)) * 100
 
     def coords_to_c(self,coords):
-        return (coords - Coords2D(self.field.x / 1.5, self.field.y / 2)) /100.0
+        return (coords - Coords2D(self.field.x / 1.9, self.field.y / 2.2)) /100.0
 
     def next_z_c(self,z_c, c):
         if (abs(z_c.x) >= 2**16 ): # if it's big, it's big
             return Coords2D(2**16,z_c.y)
         if (abs(z_c.y) >= 2**16): # if it's big, it's big
             return Coords2D(z_c.x,2**16)
-        to_pow = Coords2D(abs(z_c.x), z_c.y)
-        return to_pow.complex_pow(self.degree) + c
+        #return Coords2D(z_c.x**2,z_c.y**3)+c
+        #to_pow = Coords2D(z_c.y,z_c.x)
+        #pow = z_c.complex_pow(self.degree)
+        #return Coords2D(abs(pow.x), pow.y)+c
+        return z_c.complex_pow(self.degree) * math.cos(z_c.length() * 4 * math.pi) + c
+        #sin: return Coords2D(c.x*math.cos(z_c.length()*math.pi),c.y*math.sin(z_c.length()*math.pi))+c
+        #return Coords2D(z_c.x * math.cos(z_c.x * math.pi), z_c.y * math.sin(z_c.y * math.pi)) + c
+        #return z_c*(1+math.cos(z_c.length() * math.pi))+c
 
     def no_to_color(self,no):
         return 0 if no.length()<0.5 else 1 if no.length()<1 else 2 \
@@ -75,7 +81,7 @@ class ExperimentMandelbrot(Drawer):
     def get_all_states(self):
         self.states=[deepcopy(self.z_c)]
 
-        for i in range(50):
+        for i in range(24):
             self.states.append(deepcopy(self.next_state()))
 
     def draw_image(self, state, size=None):

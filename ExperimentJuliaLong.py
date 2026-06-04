@@ -14,7 +14,7 @@ class ExperimentJuliaLong(Drawer):
         self.c = None
         self.z_start = [[self.coords_to_z(Coords2D(j,i)) for j in range(self.field.x)] for i in range(self.field.y)]
         #self.colors = [[8 for j in range(self.field.x)] for i in range(self.field.y)]
-        self.file_name = "videos/"+"CeltJuliaLong_"+str(self.degree)+"_"
+        self.file_name = "videos/"+"RealCelticJuliaLong_"+str(self.degree)+"_"
 
         self.iterations_no=10
 
@@ -30,8 +30,14 @@ class ExperimentJuliaLong(Drawer):
         if (abs(z_c.y) > 2**8): # if it's big, it's big
             return Coords2D(z_c.x,2**8)
 
-        to_pow = Coords2D(abs(z_c.x), z_c.y)
-        return to_pow.complex_pow(self.degree) + c
+        #to_pow = Coords2D(z_c.y, z_c.x)
+        #return to_pow.complex_pow(self.degree) + c
+        #return Coords2D(c.x * math.cos(z_c.length() * 2*math.pi), c.y * math.sin(z_c.length() * 2*math.pi)) + c
+        #return Coords2D(z_c.x * math.cos(z_c.x * 2*math.pi), z_c.y * math.sin(z_c.y * 2* math.pi)) + c
+        #return z_c.complex_pow(self.degree)*math.cos(z_c.length() * 4*math.pi) + c
+        #return z_c.complex_pow(self.degree) * math.sin(z_c.x * 4 * math.pi) * math.cos(z_c.y * 4 * math.pi) + c
+        pow = z_c.complex_pow(self.degree)
+        return Coords2D(abs(pow.x), pow.y) + c
 
     def no_to_color(self,no):
         return 0 if no.length()<0.5 else 1 if no.length()<1 else 2 \
