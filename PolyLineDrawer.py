@@ -99,25 +99,29 @@ class PolyLineDrawer(Drawer):
         if (self.need_grid):
             self.grid(draw)
 
-        if state["lines_no"] is not None:
+        if "lines_no" in state:
             for i in range(0, state["lines_no"]):
                 if self.poly_lines[i]==Coords2D(-1,-1) or self.poly_lines[i+1]==Coords2D(-1,-1):
                     continue
                 #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
-                draw.line([self.offset.x+self.poly_lines[i].x*self.multiplier,
-                           self.offset.y+self.poly_lines[i].y*self.multiplier,
-                           self.offset.x + self.poly_lines[i+1].x*self.multiplier,
-                           self.offset.y+self.poly_lines[i+1].y*self.multiplier], fill=self.fill(i), width=8)
+                start = self.offset_point(self.poly_lines[i])
+                end = self.offset_point(self.poly_lines[i+1])
+                draw.line([start.x,
+                           start.y,
+                           end.x,
+                           end.y], fill=self.fill(i), width=8)
 
-        elif state["lines"] is not None:
+        elif "lines" in state:
             for i in range(0, len(state["lines"])-1):
                 if state["lines"][i]==Coords2D(-1,-1) or state["lines"][i+1]==Coords2D(-1,-1):
                     continue
                 #print("DRAWING: {0} to {1}".format(state[i],state[i+1]))
-                draw.line([self.offset.x+state["lines"][i].x*self.multiplier,
-                           self.offset.y+state["lines"][i].y*self.multiplier,
-                           self.offset.x + state["lines"][i+1].x*self.multiplier,
-                           self.offset.y+state["lines"][i+1].y*self.multiplier], fill=self.fill(i), width=8)
+                start = self.offset_point(state["lines"][i])
+                end = self.offset_point(state["lines"][i+1])
+                draw.line([start.x,
+                           start.y,
+                           end.x,
+                           end.y], fill=self.fill(i), width=8)
 
         if (self.border):
             self.draw_border(draw)

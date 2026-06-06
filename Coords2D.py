@@ -27,6 +27,13 @@ class Coords2D:
     def complex_mul(self, coord: Self) -> Self: # complex
         return Coords2D(self.x*coord.x - self.y*coord.y, self.y*coord.x + self.x*coord.y)
 
+    def complex_cos(self):
+        return Coords2D(math.cos(self.x)*math.cosh(self.y), -math.sin(self.x)*math.sinh(self.y))
+
+    def complex_sin(self):
+        return Coords2D(math.sin(self.x)*math.cosh(self.y), math.cos(self.x)*math.sinh(self.y))
+
+
     def complex_pow(self, power: int):
         if power < 0:
             return None

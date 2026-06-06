@@ -14,15 +14,15 @@ class ExperimentJuliaLong(Drawer):
         self.c = None
         self.z_start = [[self.coords_to_z(Coords2D(j,i)) for j in range(self.field.x)] for i in range(self.field.y)]
         #self.colors = [[8 for j in range(self.field.x)] for i in range(self.field.y)]
-        self.file_name = "videos/"+"RealCelticJuliaLong_"+str(self.degree)+"_"
+        self.file_name = "videos/"+"CompCosJuliaLong_"+str(self.degree)+"_"
 
         self.iterations_no=10
 
     def z_to_coords(self, z):
-        return (z + Coords2D(self.field.x/1.67, self.field.y/2)) * self.field.x/4
+        return (z + Coords2D(self.field.x/2, self.field.y/2)) * self.field.x/6
 
     def coords_to_z(self,coords):
-        return (coords - Coords2D(self.field.x / 1.67, self.field.y / 2)) /self.field.x*4
+        return (coords - Coords2D(self.field.x /2, self.field.y / 2)) /self.field.x*6
 
     def next_z_c(self,z_c, c):
         if (abs(z_c.x) > 2**8 ): # if it's big, it's big
@@ -36,8 +36,12 @@ class ExperimentJuliaLong(Drawer):
         #return Coords2D(z_c.x * math.cos(z_c.x * 2*math.pi), z_c.y * math.sin(z_c.y * 2* math.pi)) + c
         #return z_c.complex_pow(self.degree)*math.cos(z_c.length() * 4*math.pi) + c
         #return z_c.complex_pow(self.degree) * math.sin(z_c.x * 4 * math.pi) * math.cos(z_c.y * 4 * math.pi) + c
-        pow = z_c.complex_pow(self.degree)
-        return Coords2D(abs(pow.x), pow.y) + c
+        #pow = z_c.complex_pow(self.degree)
+        #return Coords2D(abs(pow.x), pow.y) + c
+        try:
+            return z_c.complex_pow(self.degree).complex_cos()+c
+        except OverflowError:
+            return z_c
 
     def no_to_color(self,no):
         return 0 if no.length()<0.5 else 1 if no.length()<1 else 2 \

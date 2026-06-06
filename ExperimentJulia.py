@@ -13,13 +13,13 @@ class ExperimentJulia(Drawer):
         self.degree = degree
         self.c = c
         self.z_c = [[self.coords_to_z(Coords2D(j,i)) for j in range(self.field.x)] for i in range(self.field.y)]
-        self.file_name = "videos/"+"CeltJulia_"+str(self.c.x)+"_"+str(self.c.y)+"_"+str(self.degree)+"_"
+        self.file_name = "videos/"+"CompCosJulia_"+str(self.c.x)+"_"+str(self.c.y)+"_"+str(self.degree)+"_"
 
     def z_to_coords(self, z):
-        return (z + Coords2D(self.field.x/2, self.field.y/2)) * self.field.x/4
+        return (z + Coords2D(self.field.x/2, self.field.y/2)) * self.field.x/6
 
     def coords_to_z(self,coords):
-        return (coords - Coords2D(self.field.x / 2, self.field.y / 2)) /self.field.x*4
+        return (coords - Coords2D(self.field.x / 2, self.field.y / 2)) /self.field.x*6
 
     def next_z_c(self,z_c):
         if (abs(z_c.x) > 2**8 ): # if it's big, it's big
@@ -30,8 +30,12 @@ class ExperimentJulia(Drawer):
         #return to_pow.complex_pow(self.degree)+self.c
         #return z_c.complex_pow(self.degree) * math.cos(z_c.length() * 4 * math.pi) + self.c
         #return z_c.complex_pow(self.degree) * math.sin(z_c.x * 4 * math.pi) * math.cos(z_c.y * 4 * math.pi) + self.c
-        pow = z_c.complex_pow(self.degree)
-        return Coords2D(abs(pow.x), pow.y) + self.c
+        #pow = z_c.complex_pow(self.degree)
+        #return Coords2D(abs(pow.x), pow.y) + self.c
+        try:
+            return z_c.complex_pow(self.degree).complex_cos()+self.c
+        except OverflowError:
+            return z_c
 
     def fill(self,number):
         match number:
@@ -70,7 +74,7 @@ class ExperimentJulia(Drawer):
     def get_all_states(self):
         self.states=[deepcopy(self.z_c)]
 
-        for i in range(20):
+        for i in range(12):
             self.states.append(deepcopy(self.next_state()))
 
     def draw_image(self, state, size=None):

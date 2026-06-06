@@ -10,6 +10,7 @@ import DragonCurve
 import Koch
 import Gosper
 import Levy
+import LongLevyByAngle
 import Cesaro
 import TSquare
 import HSquare
@@ -67,7 +68,7 @@ for i in range(0,40):
 
 #drawer= Koch.Koch(Coords2D(1080,1920), 3, 1, field_size=Coords2D(400,400),border=True,side=1,max_iterations=7)
 
-#drawer= Levy.Levy(Coords2D(1080,1920), 3, 4, field_size=Coords2D(990, 1210),border=True,max_iterations=15)
+
 #drawer= Cesaro.Cesaro(Coords2D(1080,1920), 3, 1, field_size=Coords2D(1080,1080),border=False,max_iterations=7)
 #drawer=TSquare.TSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
 #drawer=HSquare.HSquare(Coords2D(1080,1920), 30, 2, field_size=Coords2D(1080,1080),border=False,max_iterations=8)
@@ -135,14 +136,17 @@ for degree in range(3,11):
                              stick_lengths = [random.randint(1,5)*(110/points) for i in range(points-1)],
                              rules=[0 if j==0 else random.randint(1,5) for j in range(points)])'''
 
-#drawer=ExperimentJuliaLong.ExperimentJuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(400,400),border=False, degree=5)
+#drawer=ExperimentJuliaLong.ExperimentJuliaLong(Coords2D(1920,1080), 60, 6, field_size=Coords2D(400,400),border=False, degree=2)
 #drawer.generate_video_3([Coords2D(1920,1080)])
-for i in (Coords2D(-0.25085756468171017,0.6535062985480412),Coords2D(-0.35836794954530027,0.9335804264972017),Coords2D(-0.3878476961970701,-0.6996957657115164),Coords2D(-0.48480962024633756,-0.8746197071393954),Coords2D(-0.5332905822709714,-0.9620816778533351),Coords2D(-0.5663883519448534,-0.699431365311274),Coords2D(-0.6560590289905072,0.7547095802227721),Coords2D(-0.6857338405616898,-0.4120304599280433),Coords2D(-0.6922524301548207,-0.8548605576026682),Coords2D(-0.6994313653112738,0.5663883519448537),Coords2D(-0.7216649318895578,0.8301805382450492),Coords2D(-0.7564148604794535,0.2604545235657253),Coords2D(-0.8301805382450491,-0.7216649318895582),Coords2D(-0.8889195065356239,0.14079101853620787),Coords2D(-0.9876883405951377,0.15643446504023098),Coords2D(-0.9998476951563913,-0.017452406437283192),Coords2D(-1.0998324646720303,-0.01919764708101151),Coords2D(0.10950412552816165,0.6913818384165964),Coords2D(0.2604545235657254,0.7564148604794534),Coords2D(0.3878476961970697,0.6996957657115166),Coords2D(0.4120304599280433,-0.6857338405616898),Coords2D(0.5889763100685984,0.11448539722592688)):
-    drawer=ExperimentJulia.ExperimentJulia(Coords2D(1080,1920), 60, 3, field_size=Coords2D(400,400),border=False, degree=5,c=i)
-    drawer.generate_video_3([Coords2D(1080,1920)])
+'''for i in (Coords2D(-0.046930339512069305,-0.29630650217854126),Coords2D(-0.06257378601609241,-0.3950753362380551),Coords2D(-0.11448539722592688,0.5889763100685984),Coords2D(-0.16278407722857832,-0.4727592877996584),Coords2D(-0.17918397477265013,0.46679021324860087),Coords2D(-0.21502076972718015,0.5601482558983211),Coords2D(-0.30902284494603255,0.5143003804212674),Coords2D(-0.32556815445715664,-0.9455185755993168),Coords2D(-0.3581249699028723,-1.0400704331592485),Coords2D(-0.35836794954530027,0.9335804264972017),Coords2D(-0.490813591723832,-0.09540449768827236),Coords2D(-0.5248472231924057,0.6037676641782177),Coords2D(-0.7216649318895578,0.8301805382450492),Coords2D(0.003490481287456626,-0.19996953903127826),Coords2D(0.06511363089143135,0.18910371511986335),Coords2D(0.1312118057981014,-0.15094191604455445),Coords2D(0.1509419160445544,0.13121180579810146),Coords2D(0.18879611731495125,0.23314378843709122),Coords2D(0.19681770869715212,-0.2264128740668317),Coords2D(0.377354790111386,0.32802951449525364),Coords2D(0.6535062985480412,0.25085756468171017),Coords2D(0.6618630029195218,-0.22789770812000967),Coords2D(0.981627183447664,0.1908089953765448),Coords2D(1.0998324646720303,0.019197647081011862)):
+    drawer=ExperimentJulia.ExperimentJulia(Coords2D(1080,1920), 60, 3, field_size=Coords2D(400,400),border=False, degree=2,c=i)
+    drawer.generate_video_3([Coords2D(1080,1920)])'''
+'''for i in range(2,11):
+    drawer=ExperimentMandelbrot.ExperimentMandelbrot(Coords2D(1080,1920), 60, 3, field_size=Coords2D(400,400),border=False, degree=i)
+    drawer.generate_video_3([Coords2D(1080,1920)])'''
 
-#drawer=ExperimentMandelbrot.ExperimentMandelbrot(Coords2D(1080,1920), 60, 3, field_size=Coords2D(400,400),border=False, degree=6)
-#drawer.generate_video_3([Coords2D(1080,1920)])
-
+#drawer= Levy.Levy(Coords2D(1080,1920), 3, 4, field_size=Coords2D(990, 1210),border=True,angle=90,max_iterations=12)
+drawer= LongLevyByAngle.LongLevyByAngle(Coords2D(1920,1080), 3, 4, field_size=Coords2D(1600, 1080),border=True,max_iterations=12,verbose=False)
+drawer.generate_video_3([Coords2D(1920,1080)])
 #drawer.alternative_add_audio()
 
