@@ -11,16 +11,13 @@ from PIL import Image, ImageDraw, ImageFont
 class Levy(PolyLineDrawer):
 
     def __init__(self,size=Coords2D(1080,1920), length=60, rate=1, field_size=Coords2D(900, 1600),
-                 border=False, angle=90, max_iterations=10):
+                 border=False, angle=90, max_iterations=10, init_state=[],filename="Levy"):
         super().__init__(size, length, rate, field_size, border)
+        self.file_name = "videos/" + filename + "_"
         self.max_iterations = max_iterations
         self.poly_lines=[]
         self.angle=angle
-
-        A= Coords2D(self.field.x*0.37,self.field.y*0.37)
-        B=Coords2D(self.field.x*0.37,self.field.y*0.63)
-        self.poly_lines.append(A)
-        self.poly_lines.append(B)
+        self.poly_lines=deepcopy(init_state)
 
     def get_all_states(self):
         self.states.append({"lines":self.poly_lines,"current_field_size":self.field})
