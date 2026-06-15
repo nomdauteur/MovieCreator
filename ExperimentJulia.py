@@ -13,7 +13,7 @@ class ExperimentJulia(Drawer):
         self.degree = degree
         self.c = c
         self.z_c = [[self.coords_to_z(Coords2D(j,i)) for j in range(self.field.x)] for i in range(self.field.y)]
-        self.file_name = "videos/"+"CompCosJulia_"+str(self.c.x)+"_"+str(self.c.y)+"_"+str(self.degree)+"_"
+        self.file_name = "videos/"+"ZnCompCosZ1Julia_"+str(self.c.x)+"_"+str(self.c.y)+"_"+str(self.degree)+"_"
 
     def z_to_coords(self, z):
         return (z + Coords2D(self.field.x/2, self.field.y/2)) * self.field.x/6
@@ -33,7 +33,8 @@ class ExperimentJulia(Drawer):
         #pow = z_c.complex_pow(self.degree)
         #return Coords2D(abs(pow.x), pow.y) + self.c
         try:
-            return z_c.complex_pow(self.degree).complex_cos()+self.c
+            #return z_c.complex_pow(self.degree).complex_cos()+self.c
+            return z_c.complex_pow(self.degree).complex_mul(z_c.complex_cos()) + self.c
         except OverflowError:
             return z_c
 

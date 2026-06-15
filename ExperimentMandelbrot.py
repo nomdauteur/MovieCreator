@@ -13,13 +13,13 @@ class ExperimentMandelbrot(Drawer):
         self.degree = degree
         self.start = start
         self.z_c = [[self.start for _ in range(self.field.x)] for _ in range(self.field.y)]
-        self.file_name="videos/CompCosMandelbrot_"+str(self.degree)+"_"
+        self.file_name="videos/ZnTimesCompCosZnMandelbrot_"+str(self.degree)+"_"
 
     def c_to_coords(self, c):
-        return (c + Coords2D(self.field.x/2, self.field.y/2)) * 65
+        return (c + Coords2D(self.field.x/2, self.field.y/2)) * 100
 
     def coords_to_c(self,coords):
-        return (coords - Coords2D(self.field.x / 2, self.field.y / 2)) /65.0
+        return (coords - Coords2D(self.field.x / 2, self.field.y / 2)) /100.0
 
     def next_z_c(self,z_c, c):
         lim=2**8
@@ -37,7 +37,10 @@ class ExperimentMandelbrot(Drawer):
         #return z_c*(1+math.cos(z_c.length() * math.pi))+c
         #return z_c.complex_pow(self.degree) * math.sin(z_c.x * 4 * math.pi) * math.cos(z_c.y * 4 * math.pi) + c
         try:
-            return z_c.complex_pow(self.degree).complex_cos()+c
+            #return z_c.complex_pow(self.degree).complex_cos()+c
+            #return z_c.complex_pow(self.degree).complex_cos().complex_sin() + c
+            #GOOD #return z_c.complex_pow(self.degree).complex_mul(z_c.complex_cos()) + c
+            return z_c.complex_pow(self.degree).complex_mul(z_c.complex_pow(self.degree).complex_cos()) + c
         except OverflowError:
             return z_c
 

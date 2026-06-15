@@ -14,7 +14,7 @@ class ExperimentJuliaLong(Drawer):
         self.c = None
         self.z_start = [[self.coords_to_z(Coords2D(j,i)) for j in range(self.field.x)] for i in range(self.field.y)]
         #self.colors = [[8 for j in range(self.field.x)] for i in range(self.field.y)]
-        self.file_name = "videos/"+"CompCosJuliaLong_"+str(self.degree)+"_"
+        self.file_name = "videos/"+"ZnTimesCompCosZ1JuliaLong_"+str(self.degree)+"_"
 
         self.iterations_no=10
 
@@ -39,7 +39,8 @@ class ExperimentJuliaLong(Drawer):
         #pow = z_c.complex_pow(self.degree)
         #return Coords2D(abs(pow.x), pow.y) + c
         try:
-            return z_c.complex_pow(self.degree).complex_cos()+c
+            #return z_c.complex_pow(self.degree).complex_cos()+c
+            return z_c.complex_pow(self.degree).complex_mul(z_c.complex_cos()) + c
         except OverflowError:
             return z_c
 
